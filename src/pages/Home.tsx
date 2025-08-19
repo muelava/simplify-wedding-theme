@@ -1,12 +1,30 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 const Home = () => {
   const coverRef = useRef<HTMLDivElement>(null);
+  const blankBackground = useRef<HTMLDivElement>(null);
   const [isOpening, setIsOpening] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [showLoader, setShowLoader] = useState(true);
+
+  useEffect(() => {
+    // Simulasi loading, kemudian tampilkan cover
+    const loadingTimer = setTimeout(() => {
+      setShowLoader(false);
+      // Delay sedikit sebelum animasi cover dimulai
+      setTimeout(() => {
+        setIsLoaded(true);
+      }, 200);
+    }, 1500); // Loader tampil 1.5 detik
+
+    return () => clearTimeout(loadingTimer);
+  }, []);
 
   const handleOpenClick = () => {
     setIsOpening(true);
     if (coverRef.current) {
+      blankBackground.current?.remove();
+
       // Menambahkan class untuk animasi fade out
       coverRef.current.style.transition = "opacity 0.8s ease-in-out, transform 0.8s ease-in-out";
       coverRef.current.style.opacity = "0";
@@ -23,9 +41,25 @@ const Home = () => {
 
   return (
     <>
-      <section className="w-full max-w-lg mx-auto relative">
+      <section className={`w-full max-w-lg mx-auto relative transition-all duration-300 ${showLoader ? "bg-white" : "bg-transparent"}`}>
+        {/* ============ LOADER ============ */}
+        {showLoader && (
+          <div className="fixed inset-0 z-50 bg-orange-50 flex flex-col justify-center items-center">
+            <div className="text-center">
+              <p className="text-[#6A6357] text-xl mb-4" style={{ fontFamily: "'Adamina', sans-serif" }}>
+                Memuat...
+              </p>
+              <div className="flex justify-center space-x-1">
+                <div className="w-2 h-2 bg-[#6A6357] rounded-full animate-bounce"></div>
+                <div className="w-2 h-2 bg-[#6A6357] rounded-full animate-bounce" style={{ animationDelay: "0.1s" }}></div>
+                <div className="w-2 h-2 bg-[#6A6357] rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* ============ NAVIGATION ============ */}
-        <div className="fixed flex flex-col gap-y-5 justify-center items-center h-screen" style={{ right: "calc(50% - 310px)" }}>
+        <div className="fixed flex flex-col gap-y-5 justify-center items-center h-screen z-40" style={{ right: "calc(50% - 310px)" }}>
           <a href="#">
             <img src="/icons/1.svg" alt="icon-1" className="size-10" />
           </a>
@@ -46,7 +80,7 @@ const Home = () => {
         {/* ============ COVER ============ */}
         <div
           ref={coverRef}
-          className="fixed inset-0 pt-14 pb-3 md:pb-16 z-30 overflow-y-auto"
+          className={`fixed inset-0 pt-14 pb-3 md:pb-16 z-50 overflow-y-auto transition-all duration-1000 ease-out ${isLoaded ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
           style={{
             backgroundImage: "url(/images/background-cover.jpeg)",
             backgroundPosition: "center",
@@ -54,7 +88,7 @@ const Home = () => {
           }}
         >
           <div className="bg-gradient-to-b from-orange-50/5 to-orange-50 absolute opacity-100 -z-10 left-0 top-0 bottom-0 right-0" />
-          <div className="flex flex-col justify-between min-h-full z-20">
+          <div className={`flex flex-col justify-between min-h-full z-20 transition-all duration-1200 delay-300 ease-out ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
             <p className="uppercase text-2xl tracking-[17px] text-center text-[#6A6357]" style={{ fontFamily: '"Alika Misely", sans-serif' }}>
               Undangan
             </p>
@@ -77,8 +111,11 @@ const Home = () => {
           </div>
         </div>
 
+        {/* blank background */}
+        <div ref={blankBackground} className="z-40 bg-orange-50 w-full h-screen fixed top-0 bottom-0 right-0 left-0"></div>
+
         {/* ============ HERO ============ */}
-        <div className="h-screen bg-[#EEEAE5] p-3">
+        <div className={`h-screen bg-[#EEEAE5] p-3 transition-opacity duration-300 ${showLoader ? "opacity-0" : "opacity-100"}`}>
           <div className="border border-dashed w-full rounded-xl h-full md:max-h-[800px] flex flex-col pt-8 md:pt-0 md:justify-center">
             <div className="relative h-4/5">
               <p className="text-[#6A6357] text-center text-lg mb-5" style={{ fontFamily: "'Adamina', sans-serif" }}>
@@ -122,7 +159,7 @@ const Home = () => {
                 >
                   <div>
                     <p className="text-[37px] text-[#6A6357]" style={{ fontFamily: "'Vintage Signature', cursive" }}>
-                      Save th Date
+                      Save the Date
                     </p>
                     <div className="text-[#6A6357] flex gap-x-3" style={{ fontFamily: "'Alika Misely', georgia" }}>
                       <span className="flex flex-col items-center">
