@@ -1,11 +1,16 @@
+import Aos from "aos";
+import "aos/dist/aos.css";
 import { useRef, useState, useEffect } from "react";
+import "animate.css";
 
 const Home = () => {
+  Aos.init();
   const coverRef = useRef<HTMLDivElement>(null);
   const blankBackground = useRef<HTMLDivElement>(null);
   const [isOpening, setIsOpening] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
+  const [showNavigation, setShowNavigation] = useState(false);
 
   useEffect(() => {
     // Simulasi loading, kemudian tampilkan cover
@@ -34,6 +39,7 @@ const Home = () => {
       setTimeout(() => {
         if (coverRef.current) {
           coverRef.current.classList.add("hidden");
+          setShowNavigation(true);
         }
       }, 800);
     }
@@ -50,31 +56,40 @@ const Home = () => {
                 Memuat...
               </p>
               <div className="flex justify-center space-x-1">
-                <div className="w-2 h-2 bg-[#6A6357] rounded-full animate-bounce"></div>
-                <div className="w-2 h-2 bg-[#6A6357] rounded-full animate-bounce" style={{ animationDelay: "0.1s" }}></div>
-                <div className="w-2 h-2 bg-[#6A6357] rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
+                <div className="w-2 h-2 bg-[#6A6357] rounded-full animate-ping"></div>
+                <div className="w-2 h-2 bg-[#6A6357] rounded-full animate-ping" style={{ animationDelay: "0.1s" }}></div>
+                <div className="w-2 h-2 bg-[#6A6357] rounded-full animate-ping" style={{ animationDelay: "0.2s" }}></div>
               </div>
             </div>
           </div>
         )}
 
         {/* ============ NAVIGATION ============ */}
-        <div className="fixed flex flex-col gap-y-5 justify-center items-center h-screen z-40" style={{ right: "calc(50% - 310px)" }}>
-          <a href="#">
-            <img src="/icons/1.svg" alt="icon-1" className="size-10" />
-          </a>
-          <a href="#">
-            <img src="/icons/2.svg" alt="icon-2" className="size-10" />
-          </a>
-          <a href="#">
-            <img src="/icons/3.svg" alt="icon-3" className="size-10" />
-          </a>
-          <a href="#">
-            <img src="/icons/4.svg" alt="icon-4" className="size-10" />
-          </a>
-          <a href="#">
-            <img src="/icons/5.svg" alt="icon-5" className="size-10" />
-          </a>
+        {showNavigation && (
+          <div className="fixed flex flex-col gap-y-5 justify-center items-center h-screen z-40 animate__animated animate__bounceInUp animate__slower" style={{ right: "calc(50% - 310px)" }}>
+            <a href="#" className="transform hover:scale-105 transition-transform duration-300" data-aos="fade-up" data-aos-delay="600" data-aos-duration="2000">
+              <img src="/icons/1.svg" alt="icon-1" className="size-10" />
+            </a>
+            <a href="#" className="transform hover:scale-105 transition-transform duration-300" data-aos="fade-up" data-aos-delay="900" data-aos-duration="2000">
+              <img src="/icons/2.svg" alt="icon-2" className="size-10" />
+            </a>
+            <a href="#" className="transform hover:scale-105 transition-transform duration-300" data-aos="fade-up" data-aos-delay="1200" data-aos-duration="2000">
+              <img src="/icons/3.svg" alt="icon-3" className="size-10" />
+            </a>
+            <a href="#" className="transform hover:scale-105 transition-transform duration-300" data-aos="fade-up" data-aos-delay="1500" data-aos-duration="2000">
+              <img src="/icons/4.svg" alt="icon-4" className="size-10" />
+            </a>
+            <a href="#" className="transform hover:scale-105 transition-transform duration-300" data-aos="fade-up" data-aos-delay="1800" data-aos-duration="2000">
+              <img src="/icons/5.svg" alt="icon-5" className="size-10" />
+            </a>
+          </div>
+        )}
+
+        {/* ============ PLAY & PAUSE MUSIC BUTTON ============ */}
+        <div className="fixed flex flex-col gap-y-5 justify-center items-center h-screen z-40" style={{ right: "calc(50% - 310px)", top: "calc(60% - 200px)" }}>
+          <div className="rounded-full size-[45px] relative opacity-70" style={{ backgroundImage: "url('/images/icon-play.png')", backgroundSize: "30px", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}>
+            <div className="w-full h-full bg-[#666765]/50 opacity-100 rounded-full"></div>
+          </div>
         </div>
 
         {/* ============ COVER ============ */}
@@ -101,7 +116,13 @@ const Home = () => {
               </p>
 
               <div className="p-1 w-full max-w-[200px] md:max-w-[220px] mx-auto rounded-sm group">
-                <button className="bg-transparent px-1 mx-auto rounded-sm flex items-center w-full border border-[#6A6357] hover:border-[#BF9E50] hover:bg-[#F2ECD9] transition-all duration-150 cursor-pointer" onClick={handleOpenClick} disabled={isOpening}>
+                <button
+                  className="bg-transparent px-1 mx-auto rounded-sm flex items-center w-full border border-[#6A6357] hover:border-[#BF9E50] hover:bg-[#F2ECD9] transition-all duration-150 cursor-pointer"
+                  onClick={() => {
+                    handleOpenClick();
+                  }}
+                  disabled={isOpening}
+                >
                   <img src="/images/unlock.png" className="size-10" />
                   <span className="h-12 md:h-14 w-[0.8px] mx-1 bg-[#6A6357] inline-block group-hover:bg-[#BF9E50]" />
                   <span className="uppercase text-[#6A6357] text-center flex-auto text-sm md:text-base">Buka Undangan</span>
