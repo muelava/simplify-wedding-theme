@@ -31,7 +31,7 @@ const Home = () => {
       blankBackground.current?.remove();
 
       // Menambahkan class untuk animasi fade out
-      coverRef.current.style.transition = "opacity 0.8s ease-in-out, transform 0.8s ease-in-out";
+      coverRef.current.style.transition = "opacity 1s ease-in-out, transform 1s ease-in-out";
       coverRef.current.style.opacity = "0";
       coverRef.current.style.transform = "scale(1.05)";
 
@@ -52,10 +52,10 @@ const Home = () => {
         {showLoader && (
           <div className="fixed inset-0 z-50 bg-orange-50 flex flex-col justify-center items-center">
             <div className="text-center">
-              <p className="text-[#6A6357] text-xl mb-4" style={{ fontFamily: "'Adamina', sans-serif" }}>
-                Memuat...
+              <p className="text-[#6A6357] text-5xl mb-8 animate__animated animate__bounceOut animate__slow" style={{ fontFamily: "'Alika Misely', georgia", fontFeatureSettings: '"ordn" on, "ss07" on' }}>
+                A & L
               </p>
-              <div className="flex justify-center space-x-1">
+              <div className="flex justify-center space-x-3 mx-auto">
                 <div className="w-2 h-2 bg-[#6A6357] rounded-full animate-ping"></div>
                 <div className="w-2 h-2 bg-[#6A6357] rounded-full animate-ping" style={{ animationDelay: "0.1s" }}></div>
                 <div className="w-2 h-2 bg-[#6A6357] rounded-full animate-ping" style={{ animationDelay: "0.2s" }}></div>
@@ -86,9 +86,9 @@ const Home = () => {
         )}
 
         {/* ============ PLAY & PAUSE MUSIC BUTTON ============ */}
-        <div className="fixed flex flex-col gap-y-5 justify-center items-center h-screen z-40" style={{ right: "calc(50% - 310px)", top: "calc(60% - 200px)" }}>
-          <div className="rounded-full size-[45px] relative opacity-70" style={{ backgroundImage: "url('/images/icon-play.png')", backgroundSize: "30px", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}>
-            <div className="w-full h-full bg-[#666765]/50 opacity-100 rounded-full"></div>
+        <div className="fixed flex flex-col gap-y-5 justify-center items-center z-40" style={{ right: "calc(50% - 310px)", bottom: "calc(30% - 200px)" }}>
+          <div className="rounded-full flex items-center justify-center cursor-pointer size-[45px] relative opacity-70 bg-[#666765]/80" style={{ backgroundImage: "url('/images/icon-play.png')", backgroundSize: "30px", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}>
+            <div className="size-3/4 bg-[#666765]/50 opacity-100 rounded-full animate-ping animate__animated animate__slower"></div>
           </div>
         </div>
 
