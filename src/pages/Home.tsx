@@ -11,6 +11,7 @@ const Home = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
   const [showNavigation, setShowNavigation] = useState(false);
+  const isTablet = window.innerWidth >= 768;
 
   useEffect(() => {
     // Simulasi loading, kemudian tampilkan cover
@@ -66,27 +67,27 @@ const Home = () => {
 
         {/* ============ NAVIGATION ============ */}
         {showNavigation && (
-          <div className="fixed flex flex-col gap-y-5 justify-center items-center h-screen z-40 animate__animated animate__bounceInUp animate__slower" style={{ right: "calc(50% - 310px)" }}>
-            <a href="#" className="transform hover:scale-105 transition-transform duration-300" data-aos="fade-up" data-aos-delay="600" data-aos-duration="2000">
-              <img src="/icons/1.svg" alt="icon-1" className="size-10" />
+          <div className="fixed w-full md:w-auto flex flex-row md:flex-col gap-x-3 gap-y-5 justify-center items-center h-10 md:h-screen z-40 animate__animated animate__bounceInUp animate__slower bottom-8 md:bottom-auto md:right-[calc(50%-310px)]">
+            <a href="#" className="transform hover:scale-105 transition-transform duration-300" data-aos={isTablet && "fade-up"} data-aos-delay="600" data-aos-duration="2000">
+              <img src="/icons/1.svg" alt="icon-1" className="size-12 md:size-10" />
             </a>
-            <a href="#" className="transform hover:scale-105 transition-transform duration-300" data-aos="fade-up" data-aos-delay="900" data-aos-duration="2000">
-              <img src="/icons/2.svg" alt="icon-2" className="size-10" />
+            <a href="#" className="transform hover:scale-105 transition-transform duration-300" data-aos={isTablet && "fade-up"} data-aos-delay="900" data-aos-duration="2000">
+              <img src="/icons/2.svg" alt="icon-2" className="size-12 md:size-10" />
             </a>
-            <a href="#" className="transform hover:scale-105 transition-transform duration-300" data-aos="fade-up" data-aos-delay="1200" data-aos-duration="2000">
-              <img src="/icons/3.svg" alt="icon-3" className="size-10" />
+            <a href="#" className="transform hover:scale-105 transition-transform duration-300" data-aos={isTablet && "fade-up"} data-aos-delay="1200" data-aos-duration="2000">
+              <img src="/icons/3.svg" alt="icon-3" className="size-12 md:size-10" />
             </a>
-            <a href="#" className="transform hover:scale-105 transition-transform duration-300" data-aos="fade-up" data-aos-delay="1500" data-aos-duration="2000">
-              <img src="/icons/4.svg" alt="icon-4" className="size-10" />
+            <a href="#" className="transform hover:scale-105 transition-transform duration-300" data-aos={isTablet && "fade-up"} data-aos-delay="1500" data-aos-duration="2000">
+              <img src="/icons/4.svg" alt="icon-4" className="size-12 md:size-10" />
             </a>
-            <a href="#" className="transform hover:scale-105 transition-transform duration-300" data-aos="fade-up" data-aos-delay="1800" data-aos-duration="2000">
-              <img src="/icons/5.svg" alt="icon-5" className="size-10" />
+            <a href="#" className="transform hover:scale-105 transition-transform duration-300" data-aos={isTablet && "fade-up"} data-aos-delay="1800" data-aos-duration="2000">
+              <img src="/icons/5.svg" alt="icon-5" className="size-12 md:size-10" />
             </a>
           </div>
         )}
 
         {/* ============ PLAY & PAUSE MUSIC BUTTON ============ */}
-        <div className="fixed flex flex-col gap-y-5 justify-center items-center z-40" style={{ right: "calc(50% - 310px)", bottom: "calc(30% - 200px)" }}>
+        <div className="fixed flex flex-col gap-y-5 justify-center items-center z-40 right-[5%] bottom-24 md:right-[calc(50%-310px)] md:bottom-[calc(30%-200px)]">
           <div className="rounded-full flex items-center justify-center cursor-pointer size-[45px] relative opacity-70 bg-[#666765]/80" style={{ backgroundImage: "url('/images/icon-play.png')", backgroundSize: "30px", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}>
             <div className="size-3/4 bg-[#666765]/50 opacity-100 rounded-full animate-ping animate__animated animate__slower"></div>
           </div>
@@ -136,7 +137,7 @@ const Home = () => {
         <div ref={blankBackground} className="z-40 bg-orange-50 w-full h-screen fixed top-0 bottom-0 right-0 left-0"></div>
 
         {/* ============ HERO ============ */}
-        <div className={`h-screen bg-[#EEEAE5] p-3 transition-opacity duration-300 ${showLoader ? "opacity-0" : "opacity-100"}`}>
+        <div className={`h-screen md:h-[90vh] bg-[#EEEAE5] p-3 transition-opacity duration-300 ${showLoader ? "opacity-0" : "opacity-100"}`}>
           <div className="border border-dashed w-full rounded-xl h-full md:max-h-[800px] flex flex-col pt-8 md:pt-0 md:justify-center">
             <div className="relative h-4/5">
               <p className="text-[#6A6357] text-center text-lg mb-5" style={{ fontFamily: "'Adamina', sans-serif" }}>
@@ -179,7 +180,7 @@ const Home = () => {
                   }}
                 >
                   <div>
-                    <p className="text-[37px] text-[#6A6357]" style={{ fontFamily: "'Vintage Signature', cursive" }}>
+                    <p className="text-[37px] text-[#6A6357] text-center" style={{ fontFamily: "VintageSignature, cursive" }}>
                       Save the Date
                     </p>
                     <div className="text-[#6A6357] flex gap-x-3" style={{ fontFamily: "'Alika Misely', georgia" }}>
@@ -207,6 +208,84 @@ const Home = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* ============ BRIDE GROOM ============ */}
+        <div className="bg-[#EEEAE5] p-3 overflow-hidden">
+          <p data-aos="fade-up" data-aos-delay="100" data-aos-duration="1500" className="text-[#6A6357] text-center text-[40px] md:text-5xl mt-3 mb-10" style={{ fontFamily: "'Alika Misely', georgia", fontFeatureSettings: '"ordn" on, "ss07" on' }}>
+            Mempelai
+          </p>
+          <p data-aos="fade-up" data-aos-delay="200" data-aos-duration="1500" className="text-[#6A6357] text-center text-lg font-normal mb-5 max-w-sm mx-auto" style={{ fontFamily: "'Adamina', sans-serif" }}>
+            Happy marriages begin when we marry the ones we love, and they blossom when we love the ones we marry.
+          </p>
+
+          <div className="relative flex justify-center h-[300px]">
+            <img src="/images/cover-5.png" alt="cover-5.png" className="size-10 rotate-45 absolute top-5 right-1/4 md:right-1/3" />
+            <div className="relative size-48">
+              <div className="relative size-48 overflow-visible flex items-center justify-center">
+                <img src="/images/groom.png" alt="groom.png" className="w-[80%] rounded-full" />
+                <img src="/images/frame-photo.png" alt="frame-photo.png" className="w-[400px] h-[400px] rounded-full absolute object-scale-down" />
+              </div>
+            </div>
+            <div className="relative size-48 top-20 right-10">
+              <div className="relative size-48 overflow-visible flex items-center justify-center">
+                <img src="/images/bride.png" alt="bride.png" className="w-[80%] rounded-full" />
+                <img src="/images/frame-photo.png" alt="frame-photo.png" className="w-[400px] h-[400px] rounded-full absolute object-scale-down -rotate-45" />
+              </div>
+            </div>
+            <p data-aos="fade-up" data-aos-delay="100" data-aos-duration="800" style={{ fontFamily: "'Million Dreams', sans-serif" }} className="absolute text-4xl md:text-5xl bottom-16 md:bottom-14 left-1/4 text-[#6A6357]">
+              &
+            </p>
+          </div>
+
+          <div data-aos="fade-up" data-aos-delay="100" data-aos-duration="1500">
+            <p className="text-[#6A6357] text-center text-3xl font-normal max-w-sm mx-auto" style={{ fontFamily: "'Alika Misely', Georgia" }}>
+              Dr. Andy Fernando
+            </p>
+            <p className="text-[#6A6357] text-center text-3xl my-3" style={{ fontFamily: "VintageSignature, cursive" }}>
+              Putra Dari
+            </p>
+            <p className="text-[#6A6357] text-center text-xl font-normal max-w-sm mx-auto" style={{ fontFamily: '"Adamina", serif' }}>
+              Ayah Ucok Fernando
+            </p>
+            <p className="text-[#6A6357] text-center text-xl font-normal mb-5 max-w-sm mx-auto" style={{ fontFamily: '"Adamina", serif' }}>
+              Ibu Ucok Fernando
+            </p>
+            <p className="text-[#6A6357] text-center text-xl font-normal mb-5 max-w-sm mx-auto" style={{ fontFamily: '"Adamina", serif' }}>
+              Jakarta Selatan
+            </p>
+          </div>
+          <br />
+          <div data-aos="fade-up" data-aos-delay="100" data-aos-duration="1500">
+            <p className="text-[#6A6357] text-center text-3xl font-normal max-w-sm mx-auto" style={{ fontFamily: "'Alika Misely', Georgia" }}>
+              Melinda Fransiska, SH., MH.
+            </p>
+            <p className="text-[#6A6357] text-center text-3xl my-3" style={{ fontFamily: "VintageSignature, cursive" }}>
+              Putri dari
+            </p>
+            <p className="text-[#6A6357] text-center text-xl font-normal max-w-sm mx-auto" style={{ fontFamily: '"Adamina", serif' }}>
+              Ayah Melinda Fransiska
+            </p>
+            <p className="text-[#6A6357] text-center text-xl font-normal mb-5 max-w-sm mx-auto" style={{ fontFamily: '"Adamina", serif' }}>
+              Ibu Melinda Fransiska
+            </p>
+            <p className="text-[#6A6357] text-center text-xl font-normal mb-5 max-w-sm mx-auto" style={{ fontFamily: '"Adamina", serif' }}>
+              Jakarta Selatan
+            </p>
+          </div>
+        </div>
+
+        {/* ============ EVENT ============ */}
+        <div className="bg-[#EEEAE5] pt-20 pb-3 overflow-visible">
+          <div className="relative overflow-visible">
+            <img src="/images/event-flower.png" alt="event-flower.png" className="size-12 md:size-14 absolute -top-9 right-[24%]" />
+            <p className="text-[#BF9E4E] text-center text-[56px] md:text-[78px] mt-3 leading-[0.5]" style={{ fontFamily: "VintageSignature, cursive" }}>
+              Detail
+            </p>
+            <p className="text-[#6A6357] tracking-[0.73rem] text-center text-lg" style={{ fontFamily: "'Adamina', sans-serif" }}>
+              ACARA
+            </p>
           </div>
         </div>
       </section>
