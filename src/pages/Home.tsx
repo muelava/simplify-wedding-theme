@@ -3,7 +3,7 @@ import "./Home.css";
 import "aos/dist/aos.css";
 import { useRef, useState, useEffect } from "react";
 import "animate.css";
-import { CalendarDays, Gift, MailOpen, MapPinned, Plus, QrCode } from "lucide-react";
+import { CalendarDays, Copy, Gift, MailOpen, MapPinned, Plus, QrCode } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import WheelGesturesPlugin from "embla-carousel-wheel-gestures";
 import Lightbox from "yet-another-react-lightbox";
@@ -12,6 +12,8 @@ import { WeddingCountdown } from "../components/WeddingCountdown";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import saveDate from "../utils/saveDate";
+import Dialog from "../components/Dialog";
+import toast from "react-hot-toast";
 
 const titleWedding = "Wedding Adilfi & Lukman";
 const weddingLocation = "https://maps.app.goo.gl/dBhBLBvaj5s1MUGd8";
@@ -46,6 +48,19 @@ const greetingsMessages = [
 ];
 const weddingDate = "2025-09-14T09:30:00";
 
+const bankAccounts = [
+  {
+    bank: "Bank MANDIRI",
+    name: "Adilfi Wicaksani",
+    number: "1770018344934",
+  },
+  {
+    bank: "Bank BCA",
+    name: "Lukman Muhamad Ismail",
+    number: "3460218178",
+  },
+];
+
 const Home = () => {
   Aos.init();
   const coverRef = useRef<HTMLDivElement>(null);
@@ -59,6 +74,7 @@ const Home = () => {
   const [open, setOpen] = useState(false);
   const [indexImage, setIndexImage] = useState(0);
   const [activeSection, setActiveSection] = useState<string>("");
+  const [openDialog, setOpenDialog] = useState(false);
 
   // Refs untuk setiap section
   const brideGroomRef = useRef(null);
@@ -192,6 +208,11 @@ const Home = () => {
         }
       }, 800);
     }
+  };
+
+  const handleCopy = (text: string, notif?: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success(<span>Nomor rekening {notif ? <b>{notif}</b> : null} berhasil disalin!</span>);
   };
 
   return (
@@ -562,7 +583,11 @@ const Home = () => {
                 <button className="flex items-center justify-center gap-x-1 bg-[#fefced] border-2 mb-5 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer hover:bg-[#FFEECE] hover:text-[#24364D] transition-colors duration-300" style={{ fontFamily: '"Anaheim", sans-serif', fontOpticalSizing: "auto" }}>
                   <MailOpen size={20} className="opacity-50" /> Kirim
                 </button>
-                <button className="flex items-center justify-center gap-x-1 bg-[#fefced] border-2 mb-3 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer hover:bg-[#FFEECE] hover:text-[#24364D] transition-colors duration-300" style={{ fontFamily: '"Anaheim", sans-serif', fontOpticalSizing: "auto" }}>
+                <button
+                  onClick={() => setOpenDialog(true)}
+                  className="flex items-center justify-center gap-x-1 bg-[#fefced] border-2 mb-3 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer hover:bg-[#FFEECE] hover:text-[#24364D] transition-colors duration-300"
+                  style={{ fontFamily: '"Anaheim", sans-serif', fontOpticalSizing: "auto" }}
+                >
                   <Gift size={20} className="opacity-50" /> Kado
                 </button>
                 <button className="flex items-center justify-center gap-x-1 bg-[#fefced] border-2 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer hover:bg-[#FFEECE] hover:text-[#24364D] transition-colors duration-300" style={{ fontFamily: '"Anaheim", sans-serif', fontOpticalSizing: "auto" }}>
@@ -634,6 +659,27 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} title="Kado Digital">
+        {bankAccounts.map((acc, i) => (
+          <div key={i} style={{ fontFamily: '"Adamina", serif' }} className="text-[#6A6357] rounded-xl bg-gradient-to-r from-[#ebe5e0] to-[#e3c4a9] p-5 shadow mb-4">
+            <small className="tracking-widest opacity-70 text-[11px] md:text-xs">Bank / Nama Rekening</small>
+            <p className="mb-3 font-extrabold text-sm md:text-base">
+              {acc.bank} / {acc.name}
+            </p>
+
+            <hr className="border-double border-[#d0bbab] my-3" />
+
+            <small className="tracking-widest opacity-70 text-[11px] md:text-xs">Nomor Rekening</small>
+            <div className="flex justify-between items-center">
+              <p className="font-extrabold text-sm md:text-base tracking-[0.25rem]">{acc.number}</p>
+              <button onClick={() => handleCopy(acc.number, acc.name)} className="p-2 hover:bg-gray-200 rounded cursor-pointer">
+                <Copy size={18} />
+              </button>
+            </div>
+          </div>
+        ))}
+      </Dialog>
     </>
   );
 };
