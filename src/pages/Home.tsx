@@ -59,6 +59,23 @@ const Home = () => {
   const [open, setOpen] = useState(false);
   const [indexImage, setIndexImage] = useState(0);
 
+  // Refs untuk setiap section
+  const brideGroomRef = useRef(null);
+  const eventsRef = useRef(null);
+  const loveStoryRef = useRef(null);
+  const galleryRef = useRef(null);
+  const greetingsRef = useRef(null);
+
+  const scrollToSectionAlt = (ref: { current: HTMLDivElement | null }) => {
+    if (ref.current) {
+      ref.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest",
+      });
+    }
+  };
+
   useEffect(() => {
     // Ketika cover masih ditampilkan, disable scroll
     if (!isOpening) {
@@ -151,21 +168,21 @@ const Home = () => {
         {/* ============ NAVIGATION ============ */}
         {showNavigation && (
           <div className="fixed w-full md:w-auto flex flex-row md:flex-col gap-x-3 gap-y-5 justify-center items-center h-10 md:h-screen z-40 animate__animated animate__bounceInUp animate__slower bottom-8 md:bottom-auto md:right-[calc(50%-310px)]">
-            <a href="#" className="transform hover:scale-105 transition-transform duration-300" data-aos={isTablet && "fade-up"} data-aos-delay="600" data-aos-duration="2000">
+            <button onClick={() => scrollToSectionAlt(brideGroomRef)} className="transform cursor-pointer hover:scale-105 transition-transform duration-300" data-aos={isTablet && "fade-up"} data-aos-delay="600" data-aos-duration="2000">
               <img src="/icons/1.svg" alt="icon-1" className="size-12 md:size-10" />
-            </a>
-            <a href="#" className="transform hover:scale-105 transition-transform duration-300" data-aos={isTablet && "fade-up"} data-aos-delay="900" data-aos-duration="2000">
+            </button>
+            <button onClick={() => scrollToSectionAlt(eventsRef)} className="transform cursor-pointer hover:scale-105 transition-transform duration-300" data-aos={isTablet && "fade-up"} data-aos-delay="900" data-aos-duration="2000">
               <img src="/icons/2.svg" alt="icon-2" className="size-12 md:size-10" />
-            </a>
-            <a href="#" className="transform hover:scale-105 transition-transform duration-300" data-aos={isTablet && "fade-up"} data-aos-delay="1200" data-aos-duration="2000">
+            </button>
+            <button onClick={() => scrollToSectionAlt(loveStoryRef)} className="transform cursor-pointer hover:scale-105 transition-transform duration-300" data-aos={isTablet && "fade-up"} data-aos-delay="1200" data-aos-duration="2000">
               <img src="/icons/3.svg" alt="icon-3" className="size-12 md:size-10" />
-            </a>
-            <a href="#" className="transform hover:scale-105 transition-transform duration-300" data-aos={isTablet && "fade-up"} data-aos-delay="1500" data-aos-duration="2000">
+            </button>
+            <button onClick={() => scrollToSectionAlt(galleryRef)} className="transform cursor-pointer hover:scale-105 transition-transform duration-300" data-aos={isTablet && "fade-up"} data-aos-delay="1500" data-aos-duration="2000">
               <img src="/icons/4.svg" alt="icon-4" className="size-12 md:size-10" />
-            </a>
-            <a href="#" className="transform hover:scale-105 transition-transform duration-300" data-aos={isTablet && "fade-up"} data-aos-delay="1800" data-aos-duration="2000">
+            </button>
+            <button onClick={() => scrollToSectionAlt(greetingsRef)} className="transform cursor-pointer hover:scale-105 transition-transform duration-300" data-aos={isTablet && "fade-up"} data-aos-delay="1800" data-aos-duration="2000">
               <img src="/icons/5.svg" alt="icon-5" className="size-12 md:size-10" />
-            </a>
+            </button>
           </div>
         )}
 
@@ -270,7 +287,7 @@ const Home = () => {
         </div>
 
         {/* ============ BRIDE GROOM ============ */}
-        <div className="bg-[#EEEAE5] p-3 overflow-hidden">
+        <div ref={brideGroomRef} className="bg-[#EEEAE5] p-3 overflow-hidden">
           <p data-aos="fade-up" data-aos-delay="100" data-aos-duration="1500" className="text-[#6A6357] text-center text-[40px] md:text-5xl mt-3 mb-10" style={{ fontFamily: "'Alika Misely', Georgia", fontFeatureSettings: '"ordn" on, "ss07" on' }}>
             Mempelai
           </p>
@@ -335,7 +352,7 @@ const Home = () => {
         </div>
 
         {/* ============ EVENTS ============ */}
-        <div className="bg-[#EEEAE5] pt-20 pb-3 overflow-visible">
+        <div ref={eventsRef} className="bg-[#EEEAE5] pt-20 pb-3 overflow-visible">
           <div className="relative overflow-visible mb-3">
             <img src="/images/event-flower.png" alt="event-flower.png" className="size-12 md:size-14 absolute -top-9 right-[24%]" />
             <p className="text-[#BF9E4E] text-center text-[56px] md:text-[78px] mt-3 leading-[0.5]" style={{ fontFamily: "VintageSignature, cursive" }} data-aos="fade-right" data-aos-duration="1500">
@@ -397,7 +414,7 @@ const Home = () => {
         </div>
 
         {/* ============ LOVE STORY ============ */}
-        <div className="bg-[#EEEAE5] p-3 pb-10">
+        <div ref={loveStoryRef} className="bg-[#EEEAE5] p-3 pb-10">
           <div className="relative py-16 mb-3" data-aos="fade" data-aos-delay="300" data-aos-duration="1000">
             <img src="/images/butter-fly-bride.png" alt="butter-fly-bride.png" className="size-13 absolute top-10 right-[20%] md:right-1/4" />
             <div className="w-full max-w-[280px] md:max-w-xs mx-auto relative">
@@ -437,7 +454,7 @@ const Home = () => {
         </div>
 
         {/* ============ PHOTO GALLERY ============ */}
-        <div className="bg-[#EEEAE5] p-5 overflow-hidden">
+        <div ref={galleryRef} className="bg-[#EEEAE5] p-5 overflow-hidden">
           <p data-aos="fade-up" data-aos-delay="100" data-aos-duration="1500" className="text-[#6A6357] text-center text-[40px] md:text-5xl mt-3 mb-8" style={{ fontFamily: "VintageSignature, cursive" }}>
             Photo Gallery
           </p>
@@ -465,7 +482,7 @@ const Home = () => {
         </div>
 
         {/* ============ PRAYERS & SAYINGS FORM ============ */}
-        <div className="bg-[#EEEAE5] p-5 overflow-hidden">
+        <div ref={greetingsRef} className="bg-[#EEEAE5] p-5 overflow-hidden">
           <div className="relative h-40 w-full max-w-xs mx-auto mb-5" data-aos="fade" data-aos-delay="300" data-aos-duration="1000">
             <img src="/images/butter-fly-bride.png" alt="butter-fly-bride.png" className="size-13 absolute bottom-10 left-6 md:left-6 -rotate-45" />
             <div style={{ fontFamily: '"Alika Misely", Georgia', fontFeatureSettings: '"ss05" on' }} className="text-[#6A6357] flex gap-x-3 items-center">
