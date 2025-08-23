@@ -8,6 +8,9 @@ import useEmblaCarousel from "embla-carousel-react";
 import WheelGesturesPlugin from "embla-carousel-wheel-gestures";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
+import { WeddingCountdown } from "../components/WeddingCountdown";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
 
 const galleriesData: string[] = ["/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg"];
 
@@ -37,6 +40,7 @@ const greetingsMessages = [
     message: "Selamat! Semoga cepat dikaruniai keturunan yang sholeh dan sholehah.",
   },
 ];
+const weddingDate = "2025-09-14T09:30:00";
 
 const Home = () => {
   Aos.init();
@@ -50,6 +54,43 @@ const Home = () => {
   const [emblaRef] = useEmblaCarousel({ dragFree: true, containScroll: "trimSnaps" }, [WheelGesturesPlugin()]);
   const [open, setOpen] = useState(false);
   const [indexImage, setIndexImage] = useState(0);
+
+  useEffect(() => {
+    // Ketika cover masih ditampilkan, disable scroll
+    if (!isOpening) {
+      // Disable scroll di body
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+      document.body.style.height = "100%";
+    } else {
+      // Enable scroll kembali ketika cover sudah dibuka
+      document.body.style.overflow = "auto";
+      document.body.style.position = "static";
+      document.body.style.width = "auto";
+      document.body.style.height = "auto";
+    }
+
+    // Cleanup function untuk reset style ketika component unmount
+    return () => {
+      document.body.style.overflow = "auto";
+      document.body.style.position = "static";
+      document.body.style.width = "auto";
+      document.body.style.height = "auto";
+    };
+  }, [isOpening]);
+
+  useEffect(() => {
+    if (!isOpening) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, [isOpening]);
 
   useEffect(() => {
     // Simulasi loading, kemudian tampilkan cover
@@ -188,7 +229,7 @@ const Home = () => {
               <div>
                 <img src="/images/divider-1.png" alt="divider-1.png" className="w-36 mx-auto" />
                 <p className="text-[#6A6357] text-center text-lg my-3" style={{ fontFamily: "'Adamina', sans-serif" }}>
-                  Sabtu, 2 April 2022
+                  {format(new Date(weddingDate), "EEEE, dd MMMM yyyy", { locale: id })}
                 </p>
                 <img src="/images/divider-1.png" alt="divider-1.png" className="w-36 mx-auto rotate-180" />
               </div>
@@ -217,32 +258,7 @@ const Home = () => {
                     backgroundSize: "calc(100% - 17px), 100%",
                   }}
                 >
-                  <div>
-                    <p className="text-[37px] text-[#6A6357] text-center" style={{ fontFamily: "VintageSignature, cursive" }}>
-                      Save the Date
-                    </p>
-                    <div className="text-[#6A6357] flex gap-x-3" style={{ fontFamily: "'Alika Misely', georgia" }}>
-                      <span className="flex flex-col items-center">
-                        <span className="text-[27px]">04</span>
-                        <small className="text-base">Hari</small>
-                      </span>
-                      <span className="w-2 text-center self-center">:</span>
-                      <span className="flex flex-col items-center">
-                        <span className="text-[27px]">03</span>
-                        <small className="text-base">Jam</small>
-                      </span>
-                      <span className="w-2 text-center self-center">:</span>
-                      <span className="flex flex-col items-center">
-                        <span className="text-[27px]">02</span>
-                        <small className="text-base">Menit</small>
-                      </span>
-                      <span className="w-2 text-center self-center">:</span>
-                      <span className="flex flex-col items-center">
-                        <span className="text-[27px]">01</span>
-                        <small className="text-base">Detik</small>
-                      </span>
-                    </div>
-                  </div>
+                  <WeddingCountdown targetDate={weddingDate} />
                 </div>
               </div>
             </div>
@@ -279,7 +295,7 @@ const Home = () => {
 
           <div data-aos="fade-up" data-aos-delay="100" data-aos-duration="1500">
             <p className="text-[#6A6357] text-center text-3xl font-normal max-w-sm mx-auto" style={{ fontFamily: "'Alika Misely', Georgia" }}>
-              Dr. Andy Fernando
+              Lukman Muhamad Ismail
             </p>
             <p className="text-[#6A6357] text-center text-3xl my-3" style={{ fontFamily: "VintageSignature, cursive" }}>
               Putra Dari
@@ -297,7 +313,7 @@ const Home = () => {
           <br />
           <div data-aos="fade-up" data-aos-delay="100" data-aos-duration="1500">
             <p className="text-[#6A6357] text-center text-3xl font-normal max-w-sm mx-auto" style={{ fontFamily: "'Alika Misely', Georgia" }}>
-              Melinda Fransiska, SH., MH.
+              Adilfi Wicaksani
             </p>
             <p className="text-[#6A6357] text-center text-3xl my-3" style={{ fontFamily: "VintageSignature, cursive" }}>
               Putri dari
