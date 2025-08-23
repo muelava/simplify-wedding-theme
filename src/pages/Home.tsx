@@ -262,13 +262,13 @@ const Home = () => {
             <img src="/images/butter-fly-bride.png" alt="butter-fly-bride.png" className="size-12 absolute top-3 right-1/4 md:right-1/3" />
             <div className="relative size-48" data-aos="fade-right" data-aos-delay="100" data-aos-duration="1500" data-aos-anchor-placement="top-bottom">
               <div className="relative size-48 overflow-visible flex items-center justify-center">
-                <img src="/images/groom.png" alt="groom.png" className="w-[80%] rounded-full" />
+                <img src="/images/bride.png" alt="bride.png" className="w-[80%] rounded-full" />
                 <img src="/images/frame-photo.png" alt="frame-photo.png" className="w-[400px] h-[400px] rounded-full absolute object-scale-down" />
               </div>
             </div>
             <div className="relative size-48 top-20 right-10" data-aos="fade-left" data-aos-delay="300" data-aos-duration="1500" data-aos-anchor-placement="top-bottom">
               <div className="relative size-48 overflow-visible flex items-center justify-center">
-                <img src="/images/bride.png" alt="bride.png" className="w-[80%] rounded-full" />
+                <img src="/images/groom.png" alt="groom.png" className="w-[80%] rounded-full" />
                 <img src="/images/frame-photo.png" alt="frame-photo.png" className="w-[400px] h-[400px] rounded-full absolute object-scale-down -rotate-45" />
               </div>
             </div>
