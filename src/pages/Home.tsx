@@ -3,17 +3,18 @@ import "./Home.css";
 import "aos/dist/aos.css";
 import { useRef, useState, useEffect } from "react";
 import "animate.css";
-import { CalendarDays, Copy, Gift, MailOpen, MapPinned, Plus, QrCode } from "lucide-react";
+import { CalendarDays, Copy, Gift, MailOpen, MailSearch, MapPinned, Plus } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import WheelGesturesPlugin from "embla-carousel-wheel-gestures";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import { WeddingCountdown } from "../components/WeddingCountdown";
-import { format } from "date-fns";
+import { format, formatDistanceToNow } from "date-fns";
 import { id } from "date-fns/locale";
 import saveDate from "../utils/saveDate";
 import Dialog from "../components/Dialog";
 import toast from "react-hot-toast";
+import { listenGreetings, submitGreeting, type GreetingData } from "../lib/greetings";
 
 const titleWedding = "Wedding Adilfi & Lukman";
 const weddingLocation = "https://maps.app.goo.gl/dBhBLBvaj5s1MUGd8";
@@ -24,28 +25,6 @@ const groomSideFamilies: string[] = ["Kel. Bapak Ahmad Fadhil", "Kel. Bapak Rizk
 
 const brideSideFamilies: string[] = ["Kel. Bapak Suryo Nugroho", "Kel. Bapak Andrian Saputra", "Kel. Ibu Lestari Widya", "Kel. Bapak Haris Gunawan", "Kel. Michael Johnson", "Kel. Olivia White", "Kel. James Anderson", "Kel. Besar Isabella Martinez", "Kel. Besar Sophia Taylor / George"];
 
-const greetingsMessages = [
-  {
-    name: "Andi Pratama",
-    message: "Selamat menempuh hidup baru, semoga menjadi keluarga yang sakinah, mawaddah, warahmah.",
-  },
-  {
-    name: "Budi Santoso",
-    message: "Semoga bahagia selalu dan langgeng sampai akhir hayat.",
-  },
-  {
-    name: "Citra Dewi",
-    message: "Selamat menikah! Semoga cinta kalian selalu tumbuh dan semakin kuat setiap harinya.",
-  },
-  {
-    name: "Dewi Anggraini",
-    message: "Semoga perjalanan rumah tangga selalu diberkahi dan penuh kebahagiaan.",
-  },
-  {
-    name: "Eko Saputra",
-    message: "Selamat! Semoga cepat dikaruniai keturunan yang sholeh dan sholehah.",
-  },
-];
 const weddingDate = "2025-09-14T09:30:00";
 
 const bankAccounts = [
@@ -75,6 +54,24 @@ const Home = () => {
   const [indexImage, setIndexImage] = useState(0);
   const [activeSection, setActiveSection] = useState<string>("");
   const [openDialog, setOpenDialog] = useState(false);
+
+  const [greetings, setGreetings] = useState<GreetingData[]>([]);
+
+  useEffect(() => {
+    const unsubscribe = listenGreetings((data) => {
+      setGreetings(data);
+    });
+
+    return () => {
+      // stop listening ketika unmount
+      unsubscribe();
+    };
+  }, []);
+
+  // greetings form state
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // Refs untuk setiap section
   const brideGroomRef = useRef(null);
@@ -213,6 +210,27 @@ const Home = () => {
   const handleCopy = (text: string, notif?: string) => {
     navigator.clipboard.writeText(text);
     toast.success(<span>Nomor rekening {notif ? <b>{notif}</b> : null} berhasil disalin!</span>);
+  };
+
+  // greetings form submit
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!name || !message) {
+      toast.error("Harap isi nama dan ucapan dulu 🙏");
+      return;
+    }
+
+    setLoading(true);
+    const res = await submitGreeting({ name, message });
+    setLoading(false);
+
+    if (res.success) {
+      toast.success("Ucapan berhasil dikirim 🎉");
+      setName("");
+      setMessage("");
+    } else {
+      toast.error("Gagal mengirim ucapan 😢");
+    }
   };
 
   return (
@@ -564,42 +582,48 @@ const Home = () => {
           </div>
 
           <div className="w-full max-w-sm mx-auto bg-[#F4F1EA] rounded-xl p-3 shadow">
-            <div className="border border-dashed rounded-xl py-3 px-5">
+            <form onSubmit={(event) => handleSubmit(event)} className="border border-dashed rounded-xl py-3 px-5">
               <div style={{ fontFamily: '"Adamina", serif' }} className="text-[#6A6357] mb-3" data-aos="fade-up" data-aos-duration="1500">
                 <label htmlFor="nama" className="block font-normal mb-1">
                   Nama :
                 </label>
-                <input type="text" id="nama" placeholder="Nama" className="border border-[#AA9B13] bg-white w-full p-2 rounded" defaultValue={"Wilwo"} />
+                <input type="text" id="nama" placeholder="Nama" className="border border-[#AA9B13] bg-white w-full p-2 rounded" defaultValue={"Wilwo"} value={name} onChange={(e) => setName(e.target.value)} />
               </div>
               <div style={{ fontFamily: '"Adamina", serif' }} className="text-[#6A6357]" data-aos="fade-up" data-aos-duration="1500">
                 <label htmlFor="message" className="block font-normal mb-1">
-                  Nama :
+                  Ucapan :
                 </label>
-                <textarea id="message" className="border border-[#AA9B13] bg-white w-full p-2 rounded min-h-30 field-sizing-content">
+                <textarea id="message" className="border border-[#AA9B13] bg-white w-full p-2 rounded min-h-30 field-sizing-content" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Ucapan...">
                   Huhuhaha
                 </textarea>
               </div>
               <div className="w-full max-w-[220px] mx-auto mb-8 mt-4" data-aos="fade-up" data-aos-duration="1500">
-                <button className="flex items-center justify-center gap-x-1 bg-[#fefced] border-2 mb-5 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer hover:bg-[#FFEECE] hover:text-[#24364D] transition-colors duration-300" style={{ fontFamily: '"Anaheim", sans-serif', fontOpticalSizing: "auto" }}>
-                  <MailOpen size={20} className="opacity-50" /> Kirim
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="flex items-center justify-center gap-x-1 bg-[#fefced] border-2 mb-5 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer hover:bg-[#FFEECE] hover:text-[#24364D] transition-colors duration-300"
+                  style={{ fontFamily: '"Anaheim", sans-serif', fontOpticalSizing: "auto" }}
+                >
+                  <MailOpen size={20} className="opacity-50" /> {loading ? "Mengirim..." : "Kirim"}
                 </button>
                 <button
+                  type="button"
                   onClick={() => setOpenDialog(true)}
                   className="flex items-center justify-center gap-x-1 bg-[#fefced] border-2 mb-3 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer hover:bg-[#FFEECE] hover:text-[#24364D] transition-colors duration-300"
                   style={{ fontFamily: '"Anaheim", sans-serif', fontOpticalSizing: "auto" }}
                 >
                   <Gift size={20} className="opacity-50" /> Kado
                 </button>
-                <button className="flex items-center justify-center gap-x-1 bg-[#fefced] border-2 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer hover:bg-[#FFEECE] hover:text-[#24364D] transition-colors duration-300" style={{ fontFamily: '"Anaheim", sans-serif', fontOpticalSizing: "auto" }}>
+                {/* <button className="flex items-center justify-center gap-x-1 bg-[#fefced] border-2 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer hover:bg-[#FFEECE] hover:text-[#24364D] transition-colors duration-300" style={{ fontFamily: '"Anaheim", sans-serif', fontOpticalSizing: "auto" }}>
                   <QrCode size={20} className="opacity-50" /> Rsvp / Kehadiran
-                </button>
+                </button> */}
               </div>
               <div style={{ fontFamily: '"Adamina", serif' }} className="text-[#6A6357] max-w-[300px] mx-auto" data-aos="fade-up" data-aos-duration="1500">
                 <p className="text-center mb-10">Atas doa & ucapan bapak/ibu/saudara/i, Kami mengucapkan terima kasih.</p>
                 <p className="text-center mb-3">Salam</p>
                 <p className="text-gradient text-[40px]">Adilfi & Lukman</p>
               </div>
-            </div>
+            </form>
           </div>
         </div>
 
@@ -650,12 +674,19 @@ const Home = () => {
             </div>
           </div>
           <div className="w-full max-w-sm mx-auto bg-[#F4F1EA] rounded-3xl px-5 py-10 shadow-lg my-10">
-            {greetingsMessages.map((item, index) => (
+            {greetings.map((item, index) => (
               <div key={index} style={{ fontFamily: '"Adamina", serif' }} className="text-[#24364D] max-w-xs mx-auto border-b border-dashed py-8" data-aos="fade-up" data-aos-delay={(150 + index * 150).toString()} data-aos-duration="800">
                 <p className="text-center mb-5 text-sm leading-normal">{item.message}</p>
                 <p className="text-center text-[#C09F4F]">{item.name}</p>
+                <p className="text-gray-400 text-[10px] text-center">{item.createdAt ? formatDistanceToNow(new Date(item.createdAt), { addSuffix: true, locale: id }) : ""}</p>
               </div>
             ))}
+            {greetings.length < 1 && (
+              <div>
+                <MailSearch size={50} className="text-[#C09F4F]/40 mx-auto mb-3" />
+                <p className="text-[#C09F4F] text-center">Belum ada ucapan</p>
+              </div>
+            )}
           </div>
         </div>
       </section>
