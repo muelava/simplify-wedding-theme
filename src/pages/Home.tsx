@@ -3,11 +3,40 @@ import "./Home.css";
 import "aos/dist/aos.css";
 import { useRef, useState, useEffect } from "react";
 import "animate.css";
-import { CalendarDays, MapPinned, Plus } from "lucide-react";
+import { CalendarDays, Gift, MailOpen, MapPinned, Plus, QrCode } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import WheelGesturesPlugin from "embla-carousel-wheel-gestures";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 
 const galleriesData: string[] = ["/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg"];
+
+const groomSideFamilies: string[] = ["Kel. Bapak Ahmad Fadhil", "Kel. Bapak Rizky Ananta", "Kel. Ibu Maya Putri", "Kel. Bapak Damar Wicaksono", "Kel. Jonathan Lee", "Kel. Emily Carter", "Kel. William Brown", "Kel. Besar Sarah Thompson", "Kel. Besar Daniel Evans / Maria"];
+
+const brideSideFamilies: string[] = ["Kel. Bapak Suryo Nugroho", "Kel. Bapak Andrian Saputra", "Kel. Ibu Lestari Widya", "Kel. Bapak Haris Gunawan", "Kel. Michael Johnson", "Kel. Olivia White", "Kel. James Anderson", "Kel. Besar Isabella Martinez", "Kel. Besar Sophia Taylor / George"];
+
+const greetingsMessages = [
+  {
+    name: "Andi Pratama",
+    message: "Selamat menempuh hidup baru, semoga menjadi keluarga yang sakinah, mawaddah, warahmah.",
+  },
+  {
+    name: "Budi Santoso",
+    message: "Semoga bahagia selalu dan langgeng sampai akhir hayat.",
+  },
+  {
+    name: "Citra Dewi",
+    message: "Selamat menikah! Semoga cinta kalian selalu tumbuh dan semakin kuat setiap harinya.",
+  },
+  {
+    name: "Dewi Anggraini",
+    message: "Semoga perjalanan rumah tangga selalu diberkahi dan penuh kebahagiaan.",
+  },
+  {
+    name: "Eko Saputra",
+    message: "Selamat! Semoga cepat dikaruniai keturunan yang sholeh dan sholehah.",
+  },
+];
 
 const Home = () => {
   Aos.init();
@@ -19,6 +48,8 @@ const Home = () => {
   const [showNavigation, setShowNavigation] = useState(false);
   const isTablet = window.innerWidth >= 768;
   const [emblaRef] = useEmblaCarousel({ dragFree: true, containScroll: "trimSnaps" }, [WheelGesturesPlugin()]);
+  const [open, setOpen] = useState(false);
+  const [indexImage, setIndexImage] = useState(0);
 
   useEffect(() => {
     // Simulasi loading, kemudian tampilkan cover
@@ -229,13 +260,13 @@ const Home = () => {
 
           <div className="relative flex justify-center h-[300px]">
             <img src="/images/butter-fly-bride.png" alt="butter-fly-bride.png" className="size-12 absolute top-3 right-1/4 md:right-1/3" />
-            <div className="relative size-48">
+            <div className="relative size-48" data-aos="fade-right" data-aos-delay="100" data-aos-duration="1500" data-aos-anchor-placement="top-bottom">
               <div className="relative size-48 overflow-visible flex items-center justify-center">
                 <img src="/images/groom.png" alt="groom.png" className="w-[80%] rounded-full" />
                 <img src="/images/frame-photo.png" alt="frame-photo.png" className="w-[400px] h-[400px] rounded-full absolute object-scale-down" />
               </div>
             </div>
-            <div className="relative size-48 top-20 right-10">
+            <div className="relative size-48 top-20 right-10" data-aos="fade-left" data-aos-delay="300" data-aos-duration="1500" data-aos-anchor-placement="top-bottom">
               <div className="relative size-48 overflow-visible flex items-center justify-center">
                 <img src="/images/bride.png" alt="bride.png" className="w-[80%] rounded-full" />
                 <img src="/images/frame-photo.png" alt="frame-photo.png" className="w-[400px] h-[400px] rounded-full absolute object-scale-down -rotate-45" />
@@ -283,14 +314,14 @@ const Home = () => {
           </div>
         </div>
 
-        {/* ============ EVENT ============ */}
+        {/* ============ EVENTS ============ */}
         <div className="bg-[#EEEAE5] pt-20 pb-3 overflow-visible">
-          <div className="relative overflow-visible">
+          <div className="relative overflow-visible mb-3">
             <img src="/images/event-flower.png" alt="event-flower.png" className="size-12 md:size-14 absolute -top-9 right-[24%]" />
-            <p className="text-[#BF9E4E] text-center text-[56px] md:text-[78px] mt-3 leading-[0.5]" style={{ fontFamily: "VintageSignature, cursive" }}>
+            <p className="text-[#BF9E4E] text-center text-[56px] md:text-[78px] mt-3 leading-[0.5]" style={{ fontFamily: "VintageSignature, cursive" }} data-aos="fade-right" data-aos-duration="1500">
               Detail
             </p>
-            <p className="text-[#6A6357] tracking-[0.73rem] text-center text-lg" style={{ fontFamily: "'Adamina', sans-serif" }}>
+            <p className="text-[#6A6357] tracking-[0.73rem] text-center text-lg" style={{ fontFamily: "'Adamina', sans-serif" }} data-aos="fade-right" data-aos-delay="500" data-aos-duration="1500">
               ACARA
             </p>
           </div>
@@ -298,22 +329,22 @@ const Home = () => {
           {/* Contract */}
           <div className="w-full max-w-xs mx-auto bg-[#F4F1EA] rounded-xl p-3 mb-4 shadow">
             <div className="border border-dashed rounded-xl">
-              <p className="text-[#6A6357] text-center text-[34px] md:text-4xl py-3 font-normal max-w-sm mx-auto" style={{ fontFamily: "'Alika Misely', Georgia" }}>
+              <p className="text-[#6A6357] text-center text-[34px] md:text-4xl py-3 font-normal max-w-sm mx-auto" style={{ fontFamily: "'Alika Misely', Georgia" }} data-aos="fade-up" data-aos-duration="1500">
                 Akad Nikah
               </p>
-              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.165rem] uppercase text-center text-base md:text-[18px] text-[#6A6357]">
+              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.165rem] uppercase text-center text-base md:text-[18px] text-[#6A6357]" data-aos="fade-up" data-aos-duration="1500">
                 Gedung Acara 1
               </p>
-              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357]">
+              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357]" data-aos="fade-up" data-aos-duration="1500">
                 Jalan Gedung Acara 1
               </p>
-              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357] mb-2 mt-3">
+              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357] mb-2 mt-3" data-aos="fade-up" data-aos-duration="1500">
                 Sabtu, 9 April 2022
               </p>
-              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357] leading-1 mb-3">
+              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357] leading-1 mb-3" data-aos="fade-up" data-aos-duration="1500">
                 12:00 - 13:00 WIB
               </p>
-              <div className="w-full max-w-[220px] mx-auto my-8">
+              <div className="w-full max-w-[220px] mx-auto my-8" data-aos="fade-up" data-aos-duration="1500">
                 <button className="flex items-center justify-center gap-x-1 bg-[#fefced] border-2 mb-2 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer" style={{ fontFamily: '"Anaheim", sans-serif', fontOpticalSizing: "auto" }}>
                   <Plus size={14} /> Kalender <CalendarDays size={16} className="align-middle" />
                 </button>
@@ -327,19 +358,19 @@ const Home = () => {
           {/* Reception */}
           <div className="w-full max-w-xs mx-auto bg-[#F4F1EA] rounded-xl p-3 shadow">
             <div className="border border-dashed rounded-xl py-3">
-              <p className="text-[#6A6357] text-center text-[34px] md:text-4xl pb-3 font-normal max-w-sm mx-auto" style={{ fontFamily: "'Alika Misely', Georgia" }}>
+              <p className="text-[#6A6357] text-center text-[34px] md:text-4xl pb-3 font-normal max-w-sm mx-auto" style={{ fontFamily: "'Alika Misely', Georgia" }} data-aos="fade-up" data-aos-duration="1500">
                 Resepsi
               </p>
-              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.165rem] uppercase text-center text-base md:text-[18px] text-[#6A6357]">
+              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.165rem] uppercase text-center text-base md:text-[18px] text-[#6A6357]" data-aos="fade-up" data-aos-duration="1500">
                 Gedung Acara 2
               </p>
-              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357]">
+              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357]" data-aos="fade-up" data-aos-duration="1500">
                 Jalan Gedung Acara 2
               </p>
-              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357] mb-2 mt-3">
+              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357] mb-2 mt-3" data-aos="fade-up" data-aos-duration="1500">
                 Sabtu, 9 April 2022
               </p>
-              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357] leading-1 mb-3">
+              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357] leading-1 mb-3" data-aos="fade-up" data-aos-duration="1500">
                 19:00 - 22:00 WIB
               </p>
             </div>
@@ -347,8 +378,8 @@ const Home = () => {
         </div>
 
         {/* ============ LOVE STORY ============ */}
-        <div className="bg-[#EEEAE5] px-3 py-16">
-          <div className="relative py-16">
+        <div className="bg-[#EEEAE5] p-3 pb-10">
+          <div className="relative py-16 mb-3" data-aos="fade" data-aos-delay="300" data-aos-duration="1000">
             <img src="/images/butter-fly-bride.png" alt="butter-fly-bride.png" className="size-13 absolute top-10 right-[20%] md:right-1/4" />
             <div className="w-full max-w-[280px] md:max-w-xs mx-auto relative">
               <p style={{ fontFamily: "'Alika Misely', Georgia", fontFeatureSettings: '"ss04" on' }} className="uppercase text-2xl md:text-3xl tracking-[0.24rem] text-[#6A6357] mb-2 md:mb-3">
@@ -362,37 +393,159 @@ const Home = () => {
           </div>
 
           {/* Love Story Journey */}
-          <div className="embla" ref={emblaRef}>
-            <div className="embla__container gap-x-5">
-              {Array.from({ length: 3 }).map((_, index) => (
-                <div key={index} className="embla__slide w-full max-w-xs mx-auto bg-[#F4F1EA] rounded-xl p-3 shadow select-none cursor-grab active:cursor-grabbing">
-                  <div className="border border-dashed rounded-xl py-3">
-                    <p className="text-[#6A6357] text-center text-[22px] font-normal max-w-sm mx-auto uppercase" style={{ fontFamily: "'Adamina', serif" }}>
-                      Kenalan
-                    </p>
-                    <p style={{ fontFamily: "'Adamina', sans-serif" }} className="text-center text-lg text-[#BF9E4E] mb-2">
-                      Kampus, 2015
-                    </p>
-                    <hr className="border-dashed border-[#BF9E4E]" />
-                    <p className="text-xs p-3 text-[#605921] leading-normal" style={{ fontFamily: "'Adamina', serif" }}>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit aliquid, alias dolorum porro quia assumenda error officiis totam sapiente odit?{" "}
-                    </p>
+          <div className="overflow-x-hidden">
+            <div className="embla" ref={emblaRef} data-aos="fade-left" data-aos-duration="1500">
+              <div className="embla__container gap-x-5">
+                {Array.from({ length: 3 }).map((_, index) => (
+                  <div key={index} className="embla__slide w-full max-w-xs mx-auto bg-[#F4F1EA] rounded-xl p-3 shadow select-none cursor-grab active:cursor-grabbing">
+                    <div className="border border-dashed rounded-xl py-3">
+                      <p className="text-[#6A6357] text-center text-[22px] font-normal max-w-sm mx-auto uppercase" style={{ fontFamily: "'Adamina', serif" }}>
+                        Kenalan
+                      </p>
+                      <p style={{ fontFamily: "'Adamina', sans-serif" }} className="text-center text-lg text-[#BF9E4E] mb-2">
+                        Kampus, 2015
+                      </p>
+                      <hr className="border-dashed border-[#BF9E4E]" />
+                      <p className="text-xs p-3 text-[#605921] leading-normal" style={{ fontFamily: "'Adamina', serif" }}>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit aliquid, alias dolorum porro quia assumenda error officiis totam sapiente odit?{" "}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
         {/* ============ PHOTO GALLERY ============ */}
         <div className="bg-[#EEEAE5] p-5 overflow-hidden">
-          <p data-aos="fade-up" data-aos-delay="100" data-aos-duration="1500" className="text-[#6A6357] text-center text-[40px] md:text-5xl mt-3 mb-10" style={{ fontFamily: "VintageSignature, cursive" }}>
+          <p data-aos="fade-up" data-aos-delay="100" data-aos-duration="1500" className="text-[#6A6357] text-center text-[40px] md:text-5xl mt-3 mb-8" style={{ fontFamily: "VintageSignature, cursive" }}>
             Photo Gallery
           </p>
 
-          <div className="grid grid-cols-3 gap-2 p-2 bg-[#f4f1ea]">
-            {galleriesData.map((item: string, index) => (
-              <img key={index} src={item} alt="background-cover.jpeg" className="object-cover aspect-square rounded cursor-pointer" />
+          <div className="grid grid-cols-3 gap-2 p-2 bg-[#f4f1ea] rounded">
+            {galleriesData.map((item: string, i: number) => (
+              <img
+                key={i}
+                src={item}
+                alt={`gallery-${i}`}
+                className="object-cover aspect-square rounded cursor-pointer"
+                data-aos="fade-up"
+                data-aos-delay={(150 + i * 150).toString()}
+                data-aos-duration="800"
+                onClick={() => {
+                  setIndexImage(i);
+                  setOpen(true);
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Lightbox */}
+          <Lightbox open={open} close={() => setOpen(false)} index={indexImage} slides={galleriesData.map((src) => ({ src }))} />
+        </div>
+
+        {/* ============ PRAYERS & SAYINGS FORM ============ */}
+        <div className="bg-[#EEEAE5] p-5 overflow-hidden">
+          <div className="relative h-40 w-full max-w-xs mx-auto mb-5" data-aos="fade" data-aos-delay="300" data-aos-duration="1000">
+            <img src="/images/butter-fly-bride.png" alt="butter-fly-bride.png" className="size-13 absolute bottom-10 left-6 md:left-6 -rotate-45" />
+            <div style={{ fontFamily: '"Alika Misely", Georgia', fontFeatureSettings: '"ss05" on' }} className="text-[#6A6357] flex gap-x-3 items-center">
+              <p className="text-[57px]">Doa</p>
+              <span style={{ fontFamily: '"Abhaya Libre", serif', fontStyle: "normal" }} className="font-extrabold text-2xl translate-y-5">
+                dan
+              </span>
+              <p className="text-[57px] flex-none absolute bottom-3 right-[calc(50%-100px)]">Ucapan</p>
+            </div>
+          </div>
+
+          <div className="w-full max-w-sm mx-auto bg-[#F4F1EA] rounded-xl p-3 shadow">
+            <div className="border border-dashed rounded-xl py-3 px-5">
+              <div style={{ fontFamily: '"Adamina", serif' }} className="text-[#6A6357] mb-3" data-aos="fade-up" data-aos-duration="1500">
+                <label htmlFor="nama" className="block font-normal mb-1">
+                  Nama :
+                </label>
+                <input type="text" id="nama" placeholder="Nama" className="border border-[#AA9B13] bg-white w-full p-2 rounded" defaultValue={"Wilwo"} />
+              </div>
+              <div style={{ fontFamily: '"Adamina", serif' }} className="text-[#6A6357]" data-aos="fade-up" data-aos-duration="1500">
+                <label htmlFor="message" className="block font-normal mb-1">
+                  Nama :
+                </label>
+                <textarea id="message" className="border border-[#AA9B13] bg-white w-full p-2 rounded min-h-30 field-sizing-content">
+                  Huhuhaha
+                </textarea>
+              </div>
+              <div className="w-full max-w-[220px] mx-auto mb-8 mt-4" data-aos="fade-up" data-aos-duration="1500">
+                <button className="flex items-center justify-center gap-x-1 bg-[#fefced] border-2 mb-5 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer hover:bg-[#FFEECE] hover:text-[#24364D] transition-colors duration-300" style={{ fontFamily: '"Anaheim", sans-serif', fontOpticalSizing: "auto" }}>
+                  <MailOpen size={20} className="opacity-50" /> Kirim
+                </button>
+                <button className="flex items-center justify-center gap-x-1 bg-[#fefced] border-2 mb-3 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer hover:bg-[#FFEECE] hover:text-[#24364D] transition-colors duration-300" style={{ fontFamily: '"Anaheim", sans-serif', fontOpticalSizing: "auto" }}>
+                  <Gift size={20} className="opacity-50" /> Kado
+                </button>
+                <button className="flex items-center justify-center gap-x-1 bg-[#fefced] border-2 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer hover:bg-[#FFEECE] hover:text-[#24364D] transition-colors duration-300" style={{ fontFamily: '"Anaheim", sans-serif', fontOpticalSizing: "auto" }}>
+                  <QrCode size={20} className="opacity-50" /> Rsvp / Kehadiran
+                </button>
+              </div>
+              <div style={{ fontFamily: '"Adamina", serif' }} className="text-[#6A6357] max-w-[300px] mx-auto" data-aos="fade-up" data-aos-duration="1500">
+                <p className="text-center mb-10">Atas doa & ucapan bapak/ibu/saudara/i, Kami mengucapkan terima kasih.</p>
+                <p className="text-center mb-3">Salam</p>
+                <p className="text-gradient text-[40px]">Adilfi & Lukman</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ============ Also Invite ============ */}
+        <div className="bg-[#EEEAE5] p-5 overflow-hidden">
+          <p className="text-[#6A6357] text-center text-[34px] md:text-4xl py-3 font-normal max-w-sm mx-auto" style={{ fontFamily: "'Alika Misely', Georgia" }} data-aos="fade-up" data-aos-duration="1500">
+            Turut Mengundang
+          </p>
+          <p className="text-gradient text-[34px]">Kel. Mempelai Pria</p>
+          <ol className="text-center text-[#6A6357] mb-5" data-aos="fade-up" data-aos-duration="1500">
+            {groomSideFamilies.map((item, index) => (
+              <li key={index} style={{ fontFamily: "'Alika Misely', Georgia" }} className="text-base leading-loose">
+                {index + 1} {item}
+              </li>
+            ))}
+          </ol>
+          <p className="text-gradient text-[34px]">Kel. Mempelai Wanita</p>
+          <ol className="text-center text-[#6A6357]" data-aos="fade-up" data-aos-duration="1500">
+            {brideSideFamilies.map((item, index) => (
+              <li key={index} style={{ fontFamily: "'Alika Misely', Georgia" }} className="text-base leading-loose">
+                {index + 1} {item}
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        {/* ============ PRAYERS & SAYINGS LIST ============ */}
+        <div className="bg-[#EEEAE5] p-5 overflow-hidden pt-10">
+          <div
+            className="w-[300px] h-[144px] rounded-[30px] mx-auto flex flex-col justify-center items-center relative"
+            style={{
+              background: `
+                url(/images/cd-bg-2.png) no-repeat center,
+                url(/images/cd-bg-1.png) no-repeat center
+                `,
+              backgroundSize: "calc(100% - 17px), 100%",
+            }}
+          >
+            <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="500" data-aos-anchor-placement="top-bottom">
+              <div className="text-[#6A6357] flex gap-x-3" style={{ fontFamily: "'Alika Misely', georgia" }}>
+                <p className="text-[#6A6357] text-center text-[22px] leading-none mb-2" style={{ fontFamily: "'Adamina', sans-serif" }}>
+                  DOA <span className="text-[45px]">&</span> UCAPAN
+                </p>
+              </div>
+              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.28rem] text-center text-base md:text-[18px] text-[#BF9E4E]">
+                dari Undangan
+              </p>
+            </div>
+          </div>
+          <div className="w-full max-w-sm mx-auto bg-[#F4F1EA] rounded-3xl px-5 py-10 shadow-lg my-10">
+            {greetingsMessages.map((item, index) => (
+              <div key={index} style={{ fontFamily: '"Adamina", serif' }} className="text-[#24364D] max-w-xs mx-auto border-b border-dashed py-8" data-aos="fade-up" data-aos-delay={(150 + index * 150).toString()} data-aos-duration="800">
+                <p className="text-center mb-5 text-sm leading-normal">{item.message}</p>
+                <p className="text-center text-[#C09F4F]">{item.name}</p>
+              </div>
             ))}
           </div>
         </div>
