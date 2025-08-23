@@ -1,7 +1,13 @@
 import Aos from "aos";
+import "./Home.css";
 import "aos/dist/aos.css";
 import { useRef, useState, useEffect } from "react";
 import "animate.css";
+import { CalendarDays, MapPinned, Plus } from "lucide-react";
+import useEmblaCarousel from "embla-carousel-react";
+import WheelGesturesPlugin from "embla-carousel-wheel-gestures";
+
+const galleriesData: string[] = ["/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg"];
 
 const Home = () => {
   Aos.init();
@@ -12,6 +18,7 @@ const Home = () => {
   const [showLoader, setShowLoader] = useState(true);
   const [showNavigation, setShowNavigation] = useState(false);
   const isTablet = window.innerWidth >= 768;
+  const [emblaRef] = useEmblaCarousel({ dragFree: true, containScroll: "trimSnaps" }, [WheelGesturesPlugin()]);
 
   useEffect(() => {
     // Simulasi loading, kemudian tampilkan cover
@@ -213,7 +220,7 @@ const Home = () => {
 
         {/* ============ BRIDE GROOM ============ */}
         <div className="bg-[#EEEAE5] p-3 overflow-hidden">
-          <p data-aos="fade-up" data-aos-delay="100" data-aos-duration="1500" className="text-[#6A6357] text-center text-[40px] md:text-5xl mt-3 mb-10" style={{ fontFamily: "'Alika Misely', georgia", fontFeatureSettings: '"ordn" on, "ss07" on' }}>
+          <p data-aos="fade-up" data-aos-delay="100" data-aos-duration="1500" className="text-[#6A6357] text-center text-[40px] md:text-5xl mt-3 mb-10" style={{ fontFamily: "'Alika Misely', Georgia", fontFeatureSettings: '"ordn" on, "ss07" on' }}>
             Mempelai
           </p>
           <p data-aos="fade-up" data-aos-delay="200" data-aos-duration="1500" className="text-[#6A6357] text-center text-lg font-normal mb-5 max-w-sm mx-auto" style={{ fontFamily: "'Adamina', sans-serif" }}>
@@ -221,7 +228,7 @@ const Home = () => {
           </p>
 
           <div className="relative flex justify-center h-[300px]">
-            <img src="/images/cover-5.png" alt="cover-5.png" className="size-10 rotate-45 absolute top-5 right-1/4 md:right-1/3" />
+            <img src="/images/butter-fly-bride.png" alt="butter-fly-bride.png" className="size-12 absolute top-3 right-1/4 md:right-1/3" />
             <div className="relative size-48">
               <div className="relative size-48 overflow-visible flex items-center justify-center">
                 <img src="/images/groom.png" alt="groom.png" className="w-[80%] rounded-full" />
@@ -286,6 +293,107 @@ const Home = () => {
             <p className="text-[#6A6357] tracking-[0.73rem] text-center text-lg" style={{ fontFamily: "'Adamina', sans-serif" }}>
               ACARA
             </p>
+          </div>
+
+          {/* Contract */}
+          <div className="w-full max-w-xs mx-auto bg-[#F4F1EA] rounded-xl p-3 mb-4 shadow">
+            <div className="border border-dashed rounded-xl">
+              <p className="text-[#6A6357] text-center text-[34px] md:text-4xl py-3 font-normal max-w-sm mx-auto" style={{ fontFamily: "'Alika Misely', Georgia" }}>
+                Akad Nikah
+              </p>
+              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.165rem] uppercase text-center text-base md:text-[18px] text-[#6A6357]">
+                Gedung Acara 1
+              </p>
+              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357]">
+                Jalan Gedung Acara 1
+              </p>
+              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357] mb-2 mt-3">
+                Sabtu, 9 April 2022
+              </p>
+              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357] leading-1 mb-3">
+                12:00 - 13:00 WIB
+              </p>
+              <div className="w-full max-w-[220px] mx-auto my-8">
+                <button className="flex items-center justify-center gap-x-1 bg-[#fefced] border-2 mb-2 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer" style={{ fontFamily: '"Anaheim", sans-serif', fontOpticalSizing: "auto" }}>
+                  <Plus size={14} /> Kalender <CalendarDays size={16} className="align-middle" />
+                </button>
+                <button className="flex items-center justify-center gap-x-1 bg-[#fefced] border-2 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer" style={{ fontFamily: '"Anaheim", sans-serif', fontOpticalSizing: "auto" }}>
+                  <MapPinned size={18} className="opacity-60" /> Buka Map
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Reception */}
+          <div className="w-full max-w-xs mx-auto bg-[#F4F1EA] rounded-xl p-3 shadow">
+            <div className="border border-dashed rounded-xl py-3">
+              <p className="text-[#6A6357] text-center text-[34px] md:text-4xl pb-3 font-normal max-w-sm mx-auto" style={{ fontFamily: "'Alika Misely', Georgia" }}>
+                Resepsi
+              </p>
+              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.165rem] uppercase text-center text-base md:text-[18px] text-[#6A6357]">
+                Gedung Acara 2
+              </p>
+              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357]">
+                Jalan Gedung Acara 2
+              </p>
+              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357] mb-2 mt-3">
+                Sabtu, 9 April 2022
+              </p>
+              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357] leading-1 mb-3">
+                19:00 - 22:00 WIB
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* ============ LOVE STORY ============ */}
+        <div className="bg-[#EEEAE5] px-3 py-16">
+          <div className="relative py-16">
+            <img src="/images/butter-fly-bride.png" alt="butter-fly-bride.png" className="size-13 absolute top-10 right-[20%] md:right-1/4" />
+            <div className="w-full max-w-[280px] md:max-w-xs mx-auto relative">
+              <p style={{ fontFamily: "'Alika Misely', Georgia", fontFeatureSettings: '"ss04" on' }} className="uppercase text-2xl md:text-3xl tracking-[0.24rem] text-[#6A6357] mb-2 md:mb-3">
+                Our Love
+              </p>
+              <img src="/images/divider-1.png" alt="divider-1.png" className="w-[125px] md:w-36 rotate-180" />
+              <p style={{ fontFamily: "'Alika Misely', Georgia", fontFeatureSettings: '"ss04" on' }} className="absolute top-[calc(50%-6px)] text-[44px] md:text-[54px] right-[calc(50%-100px)] md:right-[calc(50%-125px)] tracking-[0.24rem] text-[#6A6357] mb-3">
+                Story
+              </p>
+            </div>
+          </div>
+
+          {/* Love Story Journey */}
+          <div className="embla" ref={emblaRef}>
+            <div className="embla__container gap-x-5">
+              {Array.from({ length: 3 }).map((_, index) => (
+                <div key={index} className="embla__slide w-full max-w-xs mx-auto bg-[#F4F1EA] rounded-xl p-3 shadow select-none cursor-grab active:cursor-grabbing">
+                  <div className="border border-dashed rounded-xl py-3">
+                    <p className="text-[#6A6357] text-center text-[22px] font-normal max-w-sm mx-auto uppercase" style={{ fontFamily: "'Adamina', serif" }}>
+                      Kenalan
+                    </p>
+                    <p style={{ fontFamily: "'Adamina', sans-serif" }} className="text-center text-lg text-[#BF9E4E] mb-2">
+                      Kampus, 2015
+                    </p>
+                    <hr className="border-dashed border-[#BF9E4E]" />
+                    <p className="text-xs p-3 text-[#605921] leading-normal" style={{ fontFamily: "'Adamina', serif" }}>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit aliquid, alias dolorum porro quia assumenda error officiis totam sapiente odit?{" "}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ============ PHOTO GALLERY ============ */}
+        <div className="bg-[#EEEAE5] p-5 overflow-hidden">
+          <p data-aos="fade-up" data-aos-delay="100" data-aos-duration="1500" className="text-[#6A6357] text-center text-[40px] md:text-5xl mt-3 mb-10" style={{ fontFamily: "VintageSignature, cursive" }}>
+            Photo Gallery
+          </p>
+
+          <div className="grid grid-cols-3 gap-2 p-2 bg-[#f4f1ea]">
+            {galleriesData.map((item: string, index) => (
+              <img key={index} src={item} alt="background-cover.jpeg" className="object-cover aspect-square rounded cursor-pointer" />
+            ))}
           </div>
         </div>
       </section>

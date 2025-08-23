@@ -13,6 +13,9 @@
     "@tailwindcss/vite": "^4.1.12",
     "animate.css": "^4.1.1",
     "aos": "^2.3.4",
+    "embla-carousel-react": "^8.6.0",
+    "embla-carousel-wheel-gestures": "^8.1.0",
+    "lucide-react": "^0.541.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "tailwindcss": "^4.1.12"
