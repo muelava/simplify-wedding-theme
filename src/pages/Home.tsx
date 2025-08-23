@@ -58,7 +58,7 @@ const Home = () => {
   const [emblaRef] = useEmblaCarousel({ dragFree: true, containScroll: "trimSnaps" }, [WheelGesturesPlugin()]);
   const [open, setOpen] = useState(false);
   const [indexImage, setIndexImage] = useState(0);
-  const [activeSection, setActiveSection] = useState("");
+  const [activeSection, setActiveSection] = useState<string>("");
 
   // Refs untuk setiap section
   const brideGroomRef = useRef(null);
@@ -85,12 +85,16 @@ const Home = () => {
       document.body.style.position = "fixed";
       document.body.style.width = "100%";
       document.body.style.height = "100%";
+
+      document.body.classList.add("no-scroll");
     } else {
       // Enable scroll kembali ketika cover sudah dibuka
       document.body.style.overflow = "auto";
       document.body.style.position = "static";
       document.body.style.width = "auto";
       document.body.style.height = "auto";
+
+      document.body.classList.remove("no-scroll");
     }
 
     // Cleanup function untuk reset style ketika component unmount
@@ -99,17 +103,7 @@ const Home = () => {
       document.body.style.position = "static";
       document.body.style.width = "auto";
       document.body.style.height = "auto";
-    };
-  }, [isOpening]);
 
-  useEffect(() => {
-    if (!isOpening) {
-      document.body.classList.add("no-scroll");
-    } else {
-      document.body.classList.remove("no-scroll");
-    }
-
-    return () => {
       document.body.classList.remove("no-scroll");
     };
   }, [isOpening]);
@@ -128,51 +122,57 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    if (!showNavigation) return;
-
-    const observerOptions = {
-      root: null,
-      rootMargin: "-20% 0px -60% 0px", // Adjust sesuai kebutuhan
-      threshold: 0.3, // Section dianggap aktif jika 30% terlihat
+    // Definisikan tipe untuk section - sesuaikan dengan tipe ref yang sudah ada
+    type SectionRef = {
+      ref: React.RefObject<HTMLDivElement | null>;
+      id: string;
     };
 
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry: IntersectionObserverEntry) => {
-        if (entry.isIntersecting) {
-          // Set active section berdasarkan id element yang terlihat
-          const section = (entry.target as HTMLElement).getAttribute("data-section");
-          if (section) {
-            setActiveSection(section);
-          }
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-    // Observe semua section
-    const sections = [
-      { ref: brideGroomRef, id: "bride-groom" },
+    const sections: SectionRef[] = [
+      { ref: brideGroomRef, id: "brideGroom" },
       { ref: eventsRef, id: "events" },
-      { ref: loveStoryRef, id: "love-story" },
+      { ref: loveStoryRef, id: "loveStory" },
       { ref: galleryRef, id: "gallery" },
       { ref: greetingsRef, id: "greetings" },
     ];
 
-    sections.forEach(({ ref }) => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const sectionId = entry.target.getAttribute("data-section");
+            if (sectionId) {
+              setActiveSection(sectionId);
+            }
+          }
+        });
+      },
+      {
+        threshold: 0.3, // Section dianggap aktif jika 30% terlihat
+        rootMargin: "-20% 0px -20% 0px", // Margin untuk lebih akurat
+      }
+    );
+
+    sections.forEach(({ ref, id }: SectionRef) => {
       if (ref.current) {
+        ref.current.setAttribute("data-section", id);
         observer.observe(ref.current);
       }
     });
 
     return () => {
-      sections.forEach(({ ref }) => {
+      sections.forEach(({ ref }: SectionRef) => {
         if (ref.current) {
           observer.unobserve(ref.current);
         }
       });
     };
   }, [showNavigation]);
+
+  // Function untuk check apakah button aktif
+  const isButtonActive = (sectionId: string): boolean => {
+    return activeSection === sectionId;
+  };
 
   const handleOpenClick = () => {
     setIsOpening(true);
@@ -194,7 +194,6 @@ const Home = () => {
     }
   };
 
-  console.log(activeSection);
   return (
     <>
       <section className={`w-full max-w-lg mx-auto relative transition-all duration-300 ${showLoader ? "bg-white" : "bg-transparent"}`}>
@@ -217,23 +216,19 @@ const Home = () => {
         {/* ============ NAVIGATION ============ */}
         {showNavigation && (
           <div className="fixed w-full md:w-auto flex flex-row md:flex-col gap-x-3 gap-y-5 justify-center items-center h-10 md:h-screen z-40 animate__animated animate__bounceInUp animate__slower bottom-8 md:bottom-auto md:right-[calc(50%-310px)]">
-            <button onClick={() => scrollToSectionAlt(brideGroomRef)} className={`transform cursor-pointer hover:scale-105 transition-transform duration-300 ${activeSection === "bride-groom" ? "scale-105" : ""}`} data-aos={isTablet && "fade-up"} data-aos-delay="600" data-aos-duration="2000">
+            <button onClick={() => scrollToSectionAlt(brideGroomRef)} className={`transform cursor-pointer hover:scale-105 transition-transform duration-300 ${isButtonActive("brideGroom") ? "scale-105" : "scale-100"}`} data-aos={isTablet && "fade-up"} data-aos-delay="600" data-aos-duration="2000">
               <img src="/icons/1.svg" alt="icon-1" className="size-12 md:size-10" />
             </button>
-
-            <button onClick={() => scrollToSectionAlt(eventsRef)} className={`transform cursor-pointer hover:scale-105 transition-transform duration-300 ${activeSection === "events" ? "scale-105" : ""}`} data-aos={isTablet && "fade-up"} data-aos-delay="900" data-aos-duration="2000">
+            <button onClick={() => scrollToSectionAlt(eventsRef)} className={`transform cursor-pointer hover:scale-105 transition-transform duration-300 ${isButtonActive("events") ? "scale-105" : "scale-100"}`} data-aos={isTablet && "fade-up"} data-aos-delay="900" data-aos-duration="2000">
               <img src="/icons/2.svg" alt="icon-2" className="size-12 md:size-10" />
             </button>
-
-            <button onClick={() => scrollToSectionAlt(loveStoryRef)} className={`transform cursor-pointer hover:scale-105 transition-transform duration-300 ${activeSection === "love-story" ? "scale-105" : ""}`} data-aos={isTablet && "fade-up"} data-aos-delay="1200" data-aos-duration="2000">
+            <button onClick={() => scrollToSectionAlt(loveStoryRef)} className={`transform cursor-pointer hover:scale-105 transition-transform duration-300 ${isButtonActive("loveStory") ? "scale-105" : "scale-100"}`} data-aos={isTablet && "fade-up"} data-aos-delay="1200" data-aos-duration="2000">
               <img src="/icons/3.svg" alt="icon-3" className="size-12 md:size-10" />
             </button>
-
-            <button onClick={() => scrollToSectionAlt(galleryRef)} className={`transform cursor-pointer hover:scale-105 transition-transform duration-300 ${activeSection === "gallery" ? "scale-105" : ""}`} data-aos={isTablet && "fade-up"} data-aos-delay="1500" data-aos-duration="2000">
+            <button onClick={() => scrollToSectionAlt(galleryRef)} className={`transform cursor-pointer hover:scale-105 transition-transform duration-300 ${isButtonActive("gallery") ? "scale-105" : "scale-100"}`} data-aos={isTablet && "fade-up"} data-aos-delay="1500" data-aos-duration="2000">
               <img src="/icons/4.svg" alt="icon-4" className="size-12 md:size-10" />
             </button>
-
-            <button onClick={() => scrollToSectionAlt(greetingsRef)} className={`transform cursor-pointer hover:scale-105 transition-transform duration-300 ${activeSection === "greetings" ? "scale-105" : ""}`} data-aos={isTablet && "fade-up"} data-aos-delay="1800" data-aos-duration="2000">
+            <button onClick={() => scrollToSectionAlt(greetingsRef)} className={`transform cursor-pointer hover:scale-105 transition-transform duration-300 ${isButtonActive("greetings") ? "scale-105" : "scale-100"}`} data-aos={isTablet && "fade-up"} data-aos-delay="1800" data-aos-duration="2000">
               <img src="/icons/5.svg" alt="icon-5" className="size-12 md:size-10" />
             </button>
           </div>
@@ -340,7 +335,7 @@ const Home = () => {
         </div>
 
         {/* ============ BRIDE GROOM ============ */}
-        <div ref={brideGroomRef} data-section="bride-groom" className="bg-[#EEEAE5] p-3 overflow-hidden">
+        <div ref={brideGroomRef} className="bg-[#EEEAE5] p-3 overflow-hidden">
           <p data-aos="fade-up" data-aos-delay="100" data-aos-duration="1500" className="text-[#6A6357] text-center text-[40px] md:text-5xl mt-3 mb-10" style={{ fontFamily: "'Alika Misely', Georgia", fontFeatureSettings: '"ordn" on, "ss07" on' }}>
             Mempelai
           </p>
@@ -405,7 +400,7 @@ const Home = () => {
         </div>
 
         {/* ============ EVENTS ============ */}
-        <div ref={eventsRef} data-section="events" className="bg-[#EEEAE5] pt-20 pb-3 overflow-visible">
+        <div ref={eventsRef} className="bg-[#EEEAE5] pt-20 pb-3 overflow-visible">
           <div className="relative overflow-visible mb-3">
             <img src="/images/event-flower.png" alt="event-flower.png" className="size-12 md:size-14 absolute -top-9 right-[24%]" />
             <p className="text-[#BF9E4E] text-center text-[56px] md:text-[78px] mt-3 leading-[0.5]" style={{ fontFamily: "VintageSignature, cursive" }} data-aos="fade-right" data-aos-duration="1500">
@@ -467,7 +462,7 @@ const Home = () => {
         </div>
 
         {/* ============ LOVE STORY ============ */}
-        <div ref={loveStoryRef} data-section="love-story" className="bg-[#EEEAE5] p-3 pb-10">
+        <div ref={loveStoryRef} className="bg-[#EEEAE5] p-3 pb-10">
           <div className="relative py-16 mb-3" data-aos="fade" data-aos-delay="300" data-aos-duration="1000">
             <img src="/images/butter-fly-bride.png" alt="butter-fly-bride.png" className="size-13 absolute top-10 right-[20%] md:right-1/4" />
             <div className="w-full max-w-[280px] md:max-w-xs mx-auto relative">
@@ -507,7 +502,7 @@ const Home = () => {
         </div>
 
         {/* ============ PHOTO GALLERY ============ */}
-        <div ref={galleryRef} data-section="gallery" className="bg-[#EEEAE5] p-5 overflow-hidden">
+        <div ref={galleryRef} className="bg-[#EEEAE5] p-5 overflow-hidden">
           <p data-aos="fade-up" data-aos-delay="100" data-aos-duration="1500" className="text-[#6A6357] text-center text-[40px] md:text-5xl mt-3 mb-8" style={{ fontFamily: "VintageSignature, cursive" }}>
             Photo Gallery
           </p>
@@ -535,7 +530,7 @@ const Home = () => {
         </div>
 
         {/* ============ PRAYERS & SAYINGS FORM ============ */}
-        <div ref={greetingsRef} data-section="greetings" className="bg-[#EEEAE5] p-5 overflow-hidden">
+        <div ref={greetingsRef} className="bg-[#EEEAE5] p-5 overflow-hidden">
           <div className="relative h-40 w-full max-w-xs mx-auto mb-5" data-aos="fade" data-aos-delay="300" data-aos-duration="1000">
             <img src="/images/butter-fly-bride.png" alt="butter-fly-bride.png" className="size-13 absolute bottom-10 left-6 md:left-6 -rotate-45" />
             <div style={{ fontFamily: '"Alika Misely", Georgia', fontFeatureSettings: '"ss05" on' }} className="text-[#6A6357] flex gap-x-3 items-center">
