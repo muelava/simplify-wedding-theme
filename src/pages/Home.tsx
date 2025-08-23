@@ -11,6 +11,10 @@ import "yet-another-react-lightbox/styles.css";
 import { WeddingCountdown } from "../components/WeddingCountdown";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
+import saveDate from "../utils/saveDate";
+
+const titleWedding = "Wedding Adilfi & Lukman";
+const weddingLocation = "https://maps.app.goo.gl/dBhBLBvaj5s1MUGd8";
 
 const galleriesData: string[] = ["/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg"];
 
@@ -295,10 +299,10 @@ const Home = () => {
 
           <div data-aos="fade-up" data-aos-delay="100" data-aos-duration="1500">
             <p className="text-[#6A6357] text-center text-3xl font-normal max-w-sm mx-auto" style={{ fontFamily: "'Alika Misely', Georgia" }}>
-              Lukman Muhamad Ismail
+              Adilfi Wicaksani
             </p>
             <p className="text-[#6A6357] text-center text-3xl my-3" style={{ fontFamily: "VintageSignature, cursive" }}>
-              Putra Dari
+              Putri Dari
             </p>
             <p className="text-[#6A6357] text-center text-xl font-normal max-w-sm mx-auto" style={{ fontFamily: '"Adamina", serif' }}>
               Ayah Ucok Fernando
@@ -307,16 +311,16 @@ const Home = () => {
               Ibu Ucok Fernando
             </p>
             <p className="text-[#6A6357] text-center text-xl font-normal mb-5 max-w-sm mx-auto" style={{ fontFamily: '"Adamina", serif' }}>
-              Jakarta Selatan
+              Garut
             </p>
           </div>
           <br />
           <div data-aos="fade-up" data-aos-delay="100" data-aos-duration="1500">
             <p className="text-[#6A6357] text-center text-3xl font-normal max-w-sm mx-auto" style={{ fontFamily: "'Alika Misely', Georgia" }}>
-              Adilfi Wicaksani
+              Lukman Muhamad Ismail
             </p>
             <p className="text-[#6A6357] text-center text-3xl my-3" style={{ fontFamily: "VintageSignature, cursive" }}>
-              Putri dari
+              Putra dari
             </p>
             <p className="text-[#6A6357] text-center text-xl font-normal max-w-sm mx-auto" style={{ fontFamily: '"Adamina", serif' }}>
               Ayah Melinda Fransiska
@@ -325,7 +329,7 @@ const Home = () => {
               Ibu Melinda Fransiska
             </p>
             <p className="text-[#6A6357] text-center text-xl font-normal mb-5 max-w-sm mx-auto" style={{ fontFamily: '"Adamina", serif' }}>
-              Jakarta Selatan
+              Purwakarta
             </p>
           </div>
         </div>
@@ -346,25 +350,24 @@ const Home = () => {
           <div className="w-full max-w-xs mx-auto bg-[#F4F1EA] rounded-xl p-3 mb-4 shadow">
             <div className="border border-dashed rounded-xl">
               <p className="text-[#6A6357] text-center text-[34px] md:text-4xl py-3 font-normal max-w-sm mx-auto" style={{ fontFamily: "'Alika Misely', Georgia" }} data-aos="fade-up" data-aos-duration="1500">
-                Akad Nikah
+                Akad & Resepsi
               </p>
               <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.165rem] uppercase text-center text-base md:text-[18px] text-[#6A6357]" data-aos="fade-up" data-aos-duration="1500">
-                Gedung Acara 1
+                Limbangan, Garut
               </p>
-              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357]" data-aos="fade-up" data-aos-duration="1500">
-                Jalan Gedung Acara 1
-              </p>
+              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357]" data-aos="fade-up" data-aos-duration="1500"></p>
               <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357] mb-2 mt-3" data-aos="fade-up" data-aos-duration="1500">
-                Sabtu, 9 April 2022
+                {format(new Date(weddingDate), "EEEE, dd MMMM yyyy", { locale: id })}
               </p>
               <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357] leading-1 mb-3" data-aos="fade-up" data-aos-duration="1500">
-                12:00 - 13:00 WIB
+                {/* 12:00 - 13:00 WIB */}
+                {format(new Date(weddingDate), "HH:mm", { locale: id })} WIB - s.d Selesai
               </p>
               <div className="w-full max-w-[220px] mx-auto my-8" data-aos="fade-up" data-aos-duration="1500">
-                <button className="flex items-center justify-center gap-x-1 bg-[#fefced] border-2 mb-2 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer" style={{ fontFamily: '"Anaheim", sans-serif', fontOpticalSizing: "auto" }}>
+                <button onClick={() => saveDate(weddingDate, titleWedding)} className="flex items-center justify-center gap-x-1 bg-[#fefced] border-2 mb-2 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer" style={{ fontFamily: '"Anaheim", sans-serif', fontOpticalSizing: "auto" }}>
                   <Plus size={14} /> Kalender <CalendarDays size={16} className="align-middle" />
                 </button>
-                <button className="flex items-center justify-center gap-x-1 bg-[#fefced] border-2 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer" style={{ fontFamily: '"Anaheim", sans-serif', fontOpticalSizing: "auto" }}>
+                <button onClick={() => window.open(weddingLocation, "_blank")} className="flex items-center justify-center gap-x-1 bg-[#fefced] border-2 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer" style={{ fontFamily: '"Anaheim", sans-serif', fontOpticalSizing: "auto" }}>
                   <MapPinned size={18} className="opacity-60" /> Buka Map
                 </button>
               </div>
@@ -372,7 +375,7 @@ const Home = () => {
           </div>
 
           {/* Reception */}
-          <div className="w-full max-w-xs mx-auto bg-[#F4F1EA] rounded-xl p-3 shadow">
+          {/* <div className="w-full max-w-xs mx-auto bg-[#F4F1EA] rounded-xl p-3 shadow">
             <div className="border border-dashed rounded-xl py-3">
               <p className="text-[#6A6357] text-center text-[34px] md:text-4xl pb-3 font-normal max-w-sm mx-auto" style={{ fontFamily: "'Alika Misely', Georgia" }} data-aos="fade-up" data-aos-duration="1500">
                 Resepsi
@@ -390,7 +393,7 @@ const Home = () => {
                 19:00 - 22:00 WIB
               </p>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* ============ LOVE STORY ============ */}
