@@ -4,6 +4,7 @@ import { Share2, Trash } from "lucide-react";
 export const SebarUndangan = () => {
   return (
     <>
+      {/* Form Tamu */}
       <section className="w-full max-w-lg mx-auto p-4">
         <form>
           {/* Nama Pengundang */}
@@ -27,13 +28,13 @@ export const SebarUndangan = () => {
           <div style={{ fontFamily: '"Adamina", serif' }} className="text-[#6A6357] flex gap-x-3 mb-3">
             <div className="flex gap-x-1.5">
               <input type="radio" id="formal" name="pilihan" className="peer/formal" />
-              <label htmlFor="formal" className="text-[#AA9B13] peer-checked/formal:text-[#6A6357]">
+              <label htmlFor="formal" className="text-[#AA9B13] peer-checked/formal:text-[#6A6357] cursor-pointer">
                 Formal
               </label>
             </div>
             <div className="flex gap-x-1.5">
               <input type="radio" id="muslim" name="pilihan" className="peer/muslim" />
-              <label htmlFor="muslim" className="text-[#AA9B13] peer-checked/muslim:text-[#6A6357]">
+              <label htmlFor="muslim" className="text-[#AA9B13] peer-checked/muslim:text-[#6A6357] cursor-pointer">
                 Muslim
               </label>
             </div>
@@ -52,8 +53,11 @@ export const SebarUndangan = () => {
           </button>
         </form>
       </section>
+
       <br />
       <br />
+
+      {/* List tamu */}
       <div className="h-full max-h-[60vh] overflow-y-auto w-full max-w-lg mx-auto relative">
         <table className="table w-full">
           <thead className="sticky w-full top-0">
