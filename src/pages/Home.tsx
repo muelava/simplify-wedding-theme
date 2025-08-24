@@ -19,7 +19,7 @@ import { listenGreetings, submitGreeting, type GreetingData } from "../lib/greet
 const titleWedding = "Wedding Adilfi & Lukman";
 const weddingLocation = "https://maps.app.goo.gl/yTBKjbF9HQUyfwAz8?g_st=aw";
 
-const galleriesData: string[] = ["/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg"];
+const galleriesData: string[] = ["/images/background-cover.jpeg", "/images/bride-groom-hand.jpeg"];
 
 const groomSideFamilies: string[] = ["Kel. Bapak Ahmad Fadhil", "Kel. Bapak Rizky Ananta", "Kel. Ibu Maya Putri", "Kel. Bapak Damar Wicaksono", "Kel. Jonathan Lee", "Kel. Emily Carter", "Kel. William Brown", "Kel. Besar Sarah Thompson", "Kel. Besar Daniel Evans / Maria"];
 
@@ -347,7 +347,7 @@ const Home = () => {
           ref={coverRef}
           className={`fixed inset-0 pt-14 pb-3 md:pb-16 z-50 overflow-y-auto transition-all duration-1000 ease-out ${isLoaded ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
           style={{
-            backgroundImage: "url(/images/background-cover.jpeg)",
+            backgroundImage: "url(/images/bride-groom-hand.jpeg)",
             backgroundPosition: "center",
             backgroundSize: "cover",
           }}

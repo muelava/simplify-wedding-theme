@@ -308,10 +308,10 @@ export const SebarUndangan = () => {
           <input type="text" id="search" placeholder="Masukkan nama tamu..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="border border-[#AA9B13] bg-white w-full p-2 rounded" />
         </div>
         <table className="table table-auto w-full">
-          <thead className="sticky w-full top-10 lg:-top-10">
+          <thead className="sticky w-full top-0 lg:-top-10">
             <tr>
-              <th className="text-start bg-amber-50 p-3 rounded-s-lg border-e w-full">Nama Tamu ({filteredGuests.length})</th>
-              <th className="text-center bg-amber-50 p-3 rounded-e-lg">Aksi</th>
+              <th className="text-start bg-amber-50 p-3 text-neutral-600 font-normal rounded-s-lg w-full">Nama Tamu ({filteredGuests.length})</th>
+              <th className="text-center bg-amber-50 p-3 text-neutral-600 font-normal rounded-e-lg">Aksi</th>
             </tr>
           </thead>
           <tbody>
@@ -325,8 +325,8 @@ export const SebarUndangan = () => {
               filteredGuests.map((guest) => (
                 <tr key={guest.id}>
                   <td className="p-3 align-middle">
-                    <p>{guest.name}</p>
-                    <small>{guest.createdAt ? formatDistanceToNow(new Date(guest.createdAt), { addSuffix: false, locale: id }) : ""} yang lalu</small>
+                    <p className="text-sm font-medium">{guest.name}</p>
+                    <small className="text-xs opacity-70">{guest.createdAt ? formatDistanceToNow(new Date(guest.createdAt), { addSuffix: false, locale: id }) : ""} yang lalu</small>
                   </td>
                   <td className="p-3 flex gap-x-1 items-center align-middle">
                     <button onClick={() => handleWhatsapp(guest.name)} className="bg-emerald-400 rounded-full shadow-lg p-2 hover:bg-emerald-500 cursor-pointer transition-colors duration-300">
