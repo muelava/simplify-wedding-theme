@@ -590,7 +590,7 @@ const Home = () => {
             <div className="embla" ref={emblaRef} data-aos="fade-left" data-aos-duration="1500">
               <div className="embla__container gap-x-5">
                 {loveStories.map((item, index) => (
-                  <div key={index} className="embla__slide w-full max-w-xs mx-auto bg-[#F4F1EA] rounded-xl p-3 shadow select-none cursor-grab active:cursor-grabbing">
+                  <div key={index} className="embla__slide w-full max-w-[300px] md:max-w-xs mx-auto bg-[#F4F1EA] rounded-xl p-3 shadow select-none cursor-grab active:cursor-grabbing">
                     <div className="border border-dashed rounded-xl py-3">
                       <p className="text-[#6A6357] text-center text-[22px] font-normal max-w-sm mx-auto uppercase" style={{ fontFamily: "'Adamina', serif" }}>
                         {item.title}
