@@ -40,6 +40,12 @@ const bankAccounts = [
   },
 ];
 
+const loveStories = [
+  { title: "Takdir Pertemuan", subtitle: "Awal Mula", desc: "Benar kata mereka, takdir memang menjadi alasan pertemuan. Seperti pecahan kaca saling merangkai, menembus sekat hingga dekat." },
+  { title: "Menuju Keyakinan", subtitle: "Perjalanan Hati", desc: "Ragu pernah menjadi bayang, tapi keteduhan dan sandaran adalah penolong dalam genggaman." },
+  { title: "Langkah Bersama", subtitle: "Menuju Masa Depan", desc: "Kini kami adalah tuan dan puan dengan sisi ego dan kosong yang bertapak di atas permulaan menuju tujuan. Bersama kami berlayar." },
+];
+
 const Home = () => {
   Aos.init();
   const coverRef = useRef<HTMLDivElement>(null);
@@ -311,10 +317,10 @@ const Home = () => {
             <button onClick={() => scrollToSectionAlt(loveStoryRef)} className={`transform cursor-pointer hover:scale-105 transition-transform duration-300 ${isButtonActive("loveStory") ? "scale-105" : "scale-100"}`} data-aos={isTablet && "fade-up"} data-aos-delay="1200" data-aos-duration="2000">
               <img src="/icons/3.svg" alt="icon-3" className="size-12 md:size-10" />
             </button>
-            <button onClick={() => scrollToSectionAlt(galleryRef)} className={`transform cursor-pointer hover:scale-105 transition-transform duration-300 ${isButtonActive("gallery") ? "scale-105" : "scale-100"}`} data-aos={isTablet && "fade-up"} data-aos-delay="1500" data-aos-duration="2000">
+            <button onClick={() => scrollToSectionAlt(galleryRef)} className={`transform cursor-pointer hover:scale-105 transition-transform duration-300 ${isButtonActive("gallery") ? "scale-105" : "scale-100"}`} data-aos={isTablet && "fade-up"} data-aos-delay="1500" data-aos-duration="2000" style={{ display: "none" }}>
               <img src="/icons/4.svg" alt="icon-4" className="size-12 md:size-10" />
             </button>
-            <button onClick={() => scrollToSectionAlt(greetingsRef)} className={`transform cursor-pointer hover:scale-105 transition-transform duration-300 ${isButtonActive("greetings") ? "scale-105" : "scale-100"}`} data-aos={isTablet && "fade-up"} data-aos-delay="1800" data-aos-duration="2000">
+            <button onClick={() => scrollToSectionAlt(greetingsRef)} className={`transform cursor-pointer hover:scale-105 transition-transform duration-300 ${isButtonActive("greetings") ? "scale-105" : "scale-100"}`} data-aos={isTablet && "fade-up"} data-aos-delay="1500" data-aos-duration="2000">
               <img src="/icons/5.svg" alt="icon-5" className="size-12 md:size-10" />
             </button>
           </div>
@@ -583,18 +589,18 @@ const Home = () => {
           <div className="overflow-x-hidden">
             <div className="embla" ref={emblaRef} data-aos="fade-left" data-aos-duration="1500">
               <div className="embla__container gap-x-5">
-                {Array.from({ length: 3 }).map((_, index) => (
+                {loveStories.map((item, index) => (
                   <div key={index} className="embla__slide w-full max-w-xs mx-auto bg-[#F4F1EA] rounded-xl p-3 shadow select-none cursor-grab active:cursor-grabbing">
                     <div className="border border-dashed rounded-xl py-3">
                       <p className="text-[#6A6357] text-center text-[22px] font-normal max-w-sm mx-auto uppercase" style={{ fontFamily: "'Adamina', serif" }}>
-                        Kenalan
+                        {item.title}
                       </p>
                       <p style={{ fontFamily: "'Adamina', sans-serif" }} className="text-center text-lg text-[#BF9E4E] mb-2">
-                        Kampus, 2015
+                        {item.subtitle}
                       </p>
                       <hr className="border-dashed border-[#BF9E4E]" />
                       <p className="text-xs p-3 text-[#605921] leading-normal" style={{ fontFamily: "'Adamina', serif" }}>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit aliquid, alias dolorum porro quia assumenda error officiis totam sapiente odit?{" "}
+                        {item.desc}
                       </p>
                     </div>
                   </div>
@@ -742,7 +748,7 @@ const Home = () => {
               <div key={index} style={{ fontFamily: '"Adamina", serif' }} className="text-[#24364D] max-w-xs mx-auto border-b border-dashed py-8" data-aos="fade-up" data-aos-delay={(150 + index * 150).toString()} data-aos-duration="800">
                 <p className="text-center mb-5 text-sm leading-normal">{item.message}</p>
                 <p className="text-center text-[#C09F4F]">{item.name}</p>
-                <p className="text-gray-400 text-[10px] text-center">{item.createdAt ? formatDistanceToNow(new Date(item.createdAt), { addSuffix: true, locale: id }) : ""}</p>
+                <p className="text-gray-400 text-[10px] text-center">{item.createdAt ? formatDistanceToNow(new Date(item.createdAt), { addSuffix: false, locale: id }) : ""} yang lalu</p>
               </div>
             ))}
             {greetings.length < 1 && (
