@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { Copy, Whatsapp } from "iconsax-react";
 import { Share2, Trash } from "lucide-react";
 import { enUS, id } from "date-fns/locale";
+import { addGuest, deleteGuest, listenGuests, type GuestData } from "../lib/guests";
+import toast from "react-hot-toast";
 
 // Informasi acara + link undangan
 const eventInfo = {
@@ -107,10 +109,11 @@ Sincerely,
 *${eventInfo.catin1.split(" ")[0]} & ${eventInfo.catin2.split(" ")[0]}*`,
 };
 
-type Guest = {
+interface Guest extends GuestData {
   id: string;
   name: string;
-};
+  invitedBy?: string;
+}
 
 export const SebarUndangan = () => {
   const [formData, setFormData] = useState({
@@ -120,6 +123,20 @@ export const SebarUndangan = () => {
     textInvitation: templates.formal,
   });
   const [guests, setGuests] = useState<Guest[]>([]);
+
+  // Listen to Firebase changes
+  useEffect(() => {
+    const unsubscribe = listenGuests((firebaseGuests: GuestData[]) => {
+      const formattedGuests: Guest[] = firebaseGuests.map((g) => ({
+        id: g.id || "",
+        name: g.name,
+        invitedBy: g.invitedBy,
+      }));
+      setGuests(formattedGuests);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   // handle input / textarea umum
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -140,7 +157,7 @@ export const SebarUndangan = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const daftarNama = formData.listNama
@@ -148,12 +165,20 @@ export const SebarUndangan = () => {
       .map((n) => n.trim())
       .filter((n) => n !== "");
 
-    const newGuests = daftarNama.map((name) => ({
-      id: crypto.randomUUID(),
-      name,
-    }));
+    for (const name of daftarNama) {
+      const guestData: GuestData = {
+        name,
+        invitedBy: formData.nama,
+      };
 
-    setGuests(newGuests);
+      await addGuest(guestData);
+      toast.success("Daftar Nama Tamu Berhasil ditambahkan");
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      listNama: "",
+    }));
   };
 
   // ---- ACTIONS ----
@@ -188,8 +213,11 @@ export const SebarUndangan = () => {
     alert(`Teks undangan untuk ${guestName} berhasil disalin`);
   };
 
-  const handleDelete = (id: string) => {
-    setGuests((prev) => prev.filter((g) => g.id !== id));
+  const handleDelete = async (id: string) => {
+    const result = await deleteGuest(id);
+    if (result.success) {
+      setGuests((prev) => prev.filter((g) => g.id !== id));
+    }
   };
 
   return (
