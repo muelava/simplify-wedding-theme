@@ -3,7 +3,7 @@ import "./Home.css";
 import "aos/dist/aos.css";
 import { useRef, useState, useEffect } from "react";
 import "animate.css";
-import { CalendarDays, Copy, Gift, MailOpen, MailSearch, MapPinned, Plus } from "lucide-react";
+import { CalendarDays, Copy, Gift, MailOpen, MailSearch, MapPinned, Pause, Play, Plus } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import WheelGesturesPlugin from "embla-carousel-wheel-gestures";
 import Lightbox from "yet-another-react-lightbox";
@@ -17,7 +17,7 @@ import toast from "react-hot-toast";
 import { listenGreetings, submitGreeting, type GreetingData } from "../lib/greetings";
 
 const titleWedding = "Wedding Adilfi & Lukman";
-const weddingLocation = "https://maps.app.goo.gl/dBhBLBvaj5s1MUGd8";
+const weddingLocation = "https://maps.app.goo.gl/yTBKjbF9HQUyfwAz8?g_st=aw";
 
 const galleriesData: string[] = ["/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg", "/images/background-cover.jpeg"];
 
@@ -25,7 +25,7 @@ const groomSideFamilies: string[] = ["Kel. Bapak Ahmad Fadhil", "Kel. Bapak Rizk
 
 const brideSideFamilies: string[] = ["Kel. Bapak Suryo Nugroho", "Kel. Bapak Andrian Saputra", "Kel. Ibu Lestari Widya", "Kel. Bapak Haris Gunawan", "Kel. Michael Johnson", "Kel. Olivia White", "Kel. James Anderson", "Kel. Besar Isabella Martinez", "Kel. Besar Sophia Taylor / George"];
 
-const weddingDate = "2025-09-14T09:30:00";
+const weddingDate = "2025-09-14T11:30:00";
 
 const bankAccounts = [
   {
@@ -54,6 +54,9 @@ const Home = () => {
   const [indexImage, setIndexImage] = useState(0);
   const [activeSection, setActiveSection] = useState<string>("");
   const [openDialog, setOpenDialog] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [guestName, setGuestName] = useState("");
 
   const [greetings, setGreetings] = useState<GreetingData[]>([]);
 
@@ -187,10 +190,34 @@ const Home = () => {
     return activeSection === sectionId;
   };
 
+  // Music Player Functions
+  const toggleMusic = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        audioRef.current.play().catch((error) => {
+          console.error("Error playing audio:", error);
+          toast.error("Tidak dapat memutar musik");
+        });
+        setIsPlaying(true);
+      }
+    }
+  };
+
   const handleOpenClick = () => {
     setIsOpening(true);
     if (coverRef.current) {
       blankBackground.current?.remove();
+
+      // Start playing music when invitation is opened
+      if (audioRef.current) {
+        audioRef.current.play().catch((error) => {
+          console.error("Error auto-playing audio:", error);
+        });
+        setIsPlaying(true);
+      }
 
       // Menambahkan class untuk animasi fade out
       coverRef.current.style.transition = "opacity 1s ease-in-out, transform 1s ease-in-out";
@@ -211,6 +238,19 @@ const Home = () => {
     navigator.clipboard.writeText(text);
     toast.success(<span>Nomor rekening {notif ? <b>{notif}</b> : null} berhasil disalin!</span>);
   };
+
+  // Get guest name from URL parameter
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const toParam = urlParams.get("to");
+
+    if (toParam) {
+      // Decode URL dan replace + dengan spasi
+      const decodedName = decodeURIComponent(toParam.replace(/\+/g, " "));
+      setGuestName(decodedName);
+      setName(decodedName);
+    }
+  }, []);
 
   // greetings form submit
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -235,6 +275,13 @@ const Home = () => {
 
   return (
     <>
+      <audio
+        ref={audioRef}
+        src="/audio/kicir-kicir.mp3" // Ganti dengan path musik Anda
+        loop
+        preload="auto"
+      />
+
       <section className={`w-full max-w-lg mx-auto relative transition-all duration-300 ${showLoader ? "bg-white" : "bg-transparent"}`}>
         {/* ============ LOADER ============ */}
         {showLoader && (
@@ -274,11 +321,20 @@ const Home = () => {
         )}
 
         {/* ============ PLAY & PAUSE MUSIC BUTTON ============ */}
-        <div className="fixed flex flex-col gap-y-5 justify-center items-center z-40 right-[5%] bottom-24 md:right-[calc(50%-310px)] md:bottom-[calc(30%-200px)]">
-          <div className="rounded-full flex items-center justify-center cursor-pointer size-[45px] relative opacity-70 bg-[#666765]/80" style={{ backgroundImage: "url('/images/icon-play.png')", backgroundSize: "30px", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}>
-            <div className="size-3/4 bg-[#666765]/50 opacity-100 rounded-full animate-ping animate__animated animate__slower"></div>
+        {showNavigation && (
+          <div className="fixed flex flex-col gap-y-5 justify-center items-center z-40 right-[5%] bottom-24 md:right-[calc(50%-310px)] md:bottom-[calc(30%-200px)]">
+            <button
+              onClick={toggleMusic}
+              className={`rounded-full flex items-center justify-center cursor-pointer size-[45px] relative opacity-70 bg-[#666765]/80 hover:opacity-90 transition-all duration-300 ${isPlaying ? "animate-spin" : ""}`}
+              style={{
+                animation: isPlaying ? "spin 3s linear infinite" : "none",
+              }}
+            >
+              <div className="size-3/4 bg-[#666765]/50 opacity-100 rounded-full animate-ping animate__animated animate__slower"></div>
+              <div className="absolute inset-0 flex items-center justify-center">{isPlaying ? <Pause size={20} className="text-white" /> : <Play size={20} className="text-white ml-1" />}</div>
+            </button>
           </div>
-        </div>
+        )}
 
         {/* ============ COVER ============ */}
         <div
@@ -296,6 +352,12 @@ const Home = () => {
               Undangan
             </p>
             <div className="py-10">
+              {guestName && (
+                <p className="text-[#6A6357] text-center text-lg mt-2 mb-5" style={{ fontFamily: "'Adamina', sans-serif" }}>
+                  <small>Kepada Yth.</small> <br />
+                  <span className="font-bold uppercase">{guestName}</span>
+                </p>
+              )}
               <p className="text-[#6A6357] text-center" style={{ fontFamily: "'Adamina', sans-serif" }}>
                 You are invited to our wedding
               </p>
@@ -409,10 +471,10 @@ const Home = () => {
               Putri Dari
             </p>
             <p className="text-[#6A6357] text-center text-xl font-normal max-w-sm mx-auto" style={{ fontFamily: '"Adamina", serif' }}>
-              Ayah Ucok Fernando
+              Bapak Subiantoro
             </p>
             <p className="text-[#6A6357] text-center text-xl font-normal mb-5 max-w-sm mx-auto" style={{ fontFamily: '"Adamina", serif' }}>
-              Ibu Ucok Fernando
+              Ibu Hj. Dede Sukaesih
             </p>
             <p className="text-[#6A6357] text-center text-xl font-normal mb-5 max-w-sm mx-auto" style={{ fontFamily: '"Adamina", serif' }}>
               Garut
@@ -427,10 +489,10 @@ const Home = () => {
               Putra dari
             </p>
             <p className="text-[#6A6357] text-center text-xl font-normal max-w-sm mx-auto" style={{ fontFamily: '"Adamina", serif' }}>
-              Ayah Melinda Fransiska
+              Bapak Alm. Suryana
             </p>
             <p className="text-[#6A6357] text-center text-xl font-normal mb-5 max-w-sm mx-auto" style={{ fontFamily: '"Adamina", serif' }}>
-              Ibu Melinda Fransiska
+              Ibu Hj. M. Tati Mulyati
             </p>
             <p className="text-[#6A6357] text-center text-xl font-normal mb-5 max-w-sm mx-auto" style={{ fontFamily: '"Adamina", serif' }}>
               Purwakarta
@@ -459,7 +521,9 @@ const Home = () => {
               <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.165rem] uppercase text-center text-base md:text-[18px] text-[#6A6357]" data-aos="fade-up" data-aos-duration="1500">
                 Limbangan, Garut
               </p>
-              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357]" data-aos="fade-up" data-aos-duration="1500"></p>
+              <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357]" data-aos="fade-up" data-aos-duration="1500">
+                Kp. Loji, Limbangan Timur Limbangan, Garut (Belakang Pos Giro)
+              </p>
               <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357] mb-2 mt-3" data-aos="fade-up" data-aos-duration="1500">
                 {format(new Date(weddingDate), "EEEE, dd MMMM yyyy", { locale: id })}
               </p>
@@ -541,7 +605,7 @@ const Home = () => {
         </div>
 
         {/* ============ PHOTO GALLERY ============ */}
-        <div ref={galleryRef} className="bg-[#EEEAE5] p-5 overflow-hidden">
+        <div ref={galleryRef} className="bg-[#EEEAE5] p-5 overflow-hidden" style={{ display: "none" }}>
           <p data-aos="fade-up" data-aos-delay="100" data-aos-duration="1500" className="text-[#6A6357] text-center text-[40px] md:text-5xl mt-3 mb-8" style={{ fontFamily: "VintageSignature, cursive" }}>
             Photo Gallery
           </p>
@@ -587,7 +651,7 @@ const Home = () => {
                 <label htmlFor="nama" className="block font-normal mb-1">
                   Nama :
                 </label>
-                <input type="text" id="nama" placeholder="Nama" className="border border-[#AA9B13] bg-white w-full p-2 rounded" defaultValue={"Wilwo"} value={name} onChange={(e) => setName(e.target.value)} />
+                <input type="text" id="nama" placeholder="Nama" className="border border-[#AA9B13] bg-white w-full p-2 rounded" value={name} onChange={(e) => setName(e.target.value)} />
               </div>
               <div style={{ fontFamily: '"Adamina", serif' }} className="text-[#6A6357]" data-aos="fade-up" data-aos-duration="1500">
                 <label htmlFor="message" className="block font-normal mb-1">
@@ -628,7 +692,7 @@ const Home = () => {
         </div>
 
         {/* ============ Also Invite ============ */}
-        <div className="bg-[#EEEAE5] p-5 overflow-hidden">
+        <div className="bg-[#EEEAE5] p-5 overflow-hidden" style={{ display: "none" }}>
           <p className="text-[#6A6357] text-center text-[34px] md:text-4xl py-3 font-normal max-w-sm mx-auto" style={{ fontFamily: "'Alika Misely', Georgia" }} data-aos="fade-up" data-aos-duration="1500">
             Turut Mengundang
           </p>
