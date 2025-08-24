@@ -293,13 +293,13 @@ const Home = () => {
         {showLoader && (
           <div className="fixed inset-0 z-50 bg-orange-50 flex flex-col justify-center items-center">
             <div className="text-center">
-              <p className="text-[#6A6357] text-5xl mb-8 animate__animated animate__bounceOut animate__slow" style={{ fontFamily: "'Alika Misely', georgia", fontFeatureSettings: '"ordn" on, "ss07" on' }}>
+              <p className="text-[#6A6357] text-4xl md:text-5xl mb-8 animate__animated animate__bounceOut animate__slow" style={{ fontFamily: "'Alika Misely', georgia", fontFeatureSettings: '"ordn" on, "ss07" on' }}>
                 A & L
               </p>
               <div className="flex justify-center space-x-3 mx-auto">
-                <div className="w-2 h-2 bg-[#6A6357] rounded-full animate-ping"></div>
-                <div className="w-2 h-2 bg-[#6A6357] rounded-full animate-ping" style={{ animationDelay: "0.1s" }}></div>
-                <div className="w-2 h-2 bg-[#6A6357] rounded-full animate-ping" style={{ animationDelay: "0.2s" }}></div>
+                <div className="size-1.5 md:size-2 bg-[#6A6357] rounded-full animate-ping"></div>
+                <div className="size-1.5 md:size-2 bg-[#6A6357] rounded-full animate-ping" style={{ animationDelay: "0.1s" }}></div>
+                <div className="size-1.5 md:size-2 bg-[#6A6357] rounded-full animate-ping" style={{ animationDelay: "0.2s" }}></div>
               </div>
             </div>
           </div>

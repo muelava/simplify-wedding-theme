@@ -124,6 +124,7 @@ export const SebarUndangan = () => {
   });
   const [guests, setGuests] = useState<Guest[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
 
   // Listen to Firebase changes
   useEffect(() => {
@@ -134,6 +135,7 @@ export const SebarUndangan = () => {
         invitedBy: g.invitedBy,
         createdAt: g.createdAt,
       }));
+      setLoading(false);
       setGuests(formattedGuests);
     });
 
@@ -315,7 +317,34 @@ export const SebarUndangan = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredGuests.length === 0 ? (
+            {loading && (
+              <tr>
+                <td colSpan={2} className="text-center text-gray-500 py-3">
+                  {/* <p className="mb-2">Memuat..</p>
+                  <div className="flex justify-center space-x-2 mx-auto">
+                    <div className="size-1.5 bg-[#6A6357] rounded-full animate-ping"></div>
+                    <div className="size-1.5 bg-[#6A6357] rounded-full animate-ping" style={{ animationDelay: "0.1s" }}></div>
+                    <div className="size-1.5 bg-[#6A6357] rounded-full animate-ping" style={{ animationDelay: "0.2s" }}></div>
+                  </div> */}
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <div key={i} className="flex items-center w-full bg-gradient-to-r from-orange-100/70 to-orange-50/70 p-3 rounded-xl mb-3">
+                      <div className="flex-auto">
+                        <div className="h-4 mb-2 rounded-full w-2/5 bg-gray-200 animate-pulse"></div>
+                        <div className="h-3 w-2/4 rounded-full bg-gray-200 animate-pulse"></div>
+                      </div>
+                      <div className="flex gap-x-1 animate-pulse">
+                        <div className="size-9 bg-gray-200 rounded-full"></div>
+                        <div className="size-9 bg-gray-200 rounded-full"></div>
+                        <div className="size-9 bg-gray-200 rounded-full"></div>
+                        <div className="size-9 bg-gray-200 rounded-full"></div>
+                      </div>
+                    </div>
+                  ))}
+                </td>
+              </tr>
+            )}
+
+            {!loading && filteredGuests.length === 0 ? (
               <tr>
                 <td colSpan={2} className="p-3 text-center text-gray-500">
                   Belum ada tamu
@@ -325,8 +354,8 @@ export const SebarUndangan = () => {
               filteredGuests.map((guest) => (
                 <tr key={guest.id}>
                   <td className="p-3 align-middle">
-                    <p className="text-sm font-medium">{guest.name}</p>
-                    <small className="text-xs opacity-70">{guest.createdAt ? formatDistanceToNow(new Date(guest.createdAt), { addSuffix: false, locale: id }) : ""} yang lalu</small>
+                    <p className="text-sm md:text-base font-medium">{guest.name}</p>
+                    <small className="text-xs md:text-sm opacity-70">{guest.createdAt ? formatDistanceToNow(new Date(guest.createdAt), { addSuffix: false, locale: id }) : ""} yang lalu</small>
                   </td>
                   <td className="p-3 flex gap-x-1 items-center align-middle">
                     <button onClick={() => handleWhatsapp(guest.name)} className="bg-emerald-400 rounded-full shadow-lg p-2 hover:bg-emerald-500 cursor-pointer transition-colors duration-300">
