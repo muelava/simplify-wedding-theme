@@ -1,19 +1,37 @@
 import { useState } from "react";
+import { format } from "date-fns";
 import { Copy, Whatsapp } from "iconsax-react";
 import { Share2, Trash } from "lucide-react";
+import { enUS, id } from "date-fns/locale";
 
 // Informasi acara + link undangan
 const eventInfo = {
   catin1: "Adilfi Wicaksani",
   catin2: "Lukman Muhamad Ismail",
-  date: "Minggu, 14 September 2025",
-  time: "11.00 WIB - Selesai",
+  // ISO date biar gampang diformat
+  date: "2025-09-14T11:00:00+07:00",
+  time: "11:00 WIB - Selesai",
   place: "Limbangan, Garut",
   getInvitationLink: (guestName: string) => {
-    const baseUrl = window.location.hostname.split("?")[0]; // bersihin query lama
+    const baseUrl = window.location.origin;
     return `${baseUrl}?to=${encodeURIComponent(guestName)}`;
   },
 };
+
+// Format tanggal Indonesia
+const formattedDateID = format(new Date(eventInfo.date), "EEEE, dd MMMM yyyy", {
+  locale: id,
+});
+
+// Format tanggal English
+const formattedDateEN = format(new Date(eventInfo.date), "EEEE, dd MMMM yyyy", {
+  locale: enUS,
+});
+
+// Format jam English (AM/PM)
+const formattedTimeEN = format(new Date(eventInfo.date), "hh:mm a", {
+  locale: enUS,
+});
 
 const templates = {
   formal: `Kepada Yth. Bapak/Ibu/Saudara/i *[nama]*
@@ -28,7 +46,7 @@ Tanpa mengurangi rasa hormat, kami bermaksud mengundang Bapak/Ibu/Saudara/i untu
 
 Yang insyaaAllah akan dilaksanakan pada:
 
-📅 Hari/Tanggal : ${eventInfo.date}
+📅 Hari/Tanggal : ${formattedDateID}
 🕒 Waktu        : ${eventInfo.time}
 📍 Tempat       : ${eventInfo.place}
 
@@ -54,7 +72,7 @@ Dengan memohon rahmat dan ridho Allah SWT, izinkan kami mengundang Bapak/Ibu/Sau
 
 Yang insyaaAllah akan dilaksanakan pada:
 
-📅 Hari/Tanggal : ${eventInfo.date}
+📅 Hari/Tanggal : ${formattedDateID}
 🕒 Waktu        : ${eventInfo.time}
 📍 Tempat       : ${eventInfo.place}
 
@@ -65,6 +83,27 @@ Tautan undangan: *[link]*
 Wassalamu’alaikum Warahmatullahi Wabarakatuh
 
 Hormat kami,
+*${eventInfo.catin1.split(" ")[0]} & ${eventInfo.catin2.split(" ")[0]}*`,
+
+  englishFormal: `Dear Mr./Mrs./Ms. *[nama]*,
+
+With great pleasure, we would like to invite you to attend and give your blessings at our wedding ceremony:
+
+🕊️ *${eventInfo.catin1}*
+&
+🕊️ *${eventInfo.catin2}*
+
+Which, God willing, will be held on:
+
+📅 Date    : ${formattedDateEN}
+🕒 Time    : ${formattedTimeEN} (until finished)
+📍 Venue   : ${eventInfo.place}
+
+It would be an honor and a great joy for us if you could join this special occasion.
+
+Invitation link: *[link]*
+
+Sincerely,
 *${eventInfo.catin1.split(" ")[0]} & ${eventInfo.catin2.split(" ")[0]}*`,
 };
 
@@ -187,6 +226,12 @@ export const SebarUndangan = () => {
               <input type="radio" id="muslim" name="pilihan" value="muslim" checked={formData.pilihan === "muslim"} onChange={handleRadioChange} className="peer/muslim" />
               <label htmlFor="muslim" className="text-[#AA9B13] peer-checked/muslim:text-[#6A6357] cursor-pointer">
                 Muslim
+              </label>
+            </div>
+            <div className="flex gap-x-1.5">
+              <input type="radio" id="englishFormal" name="pilihan" value="englishFormal" checked={formData.pilihan === "englishFormal"} onChange={handleRadioChange} className="peer/englishFormal" />
+              <label htmlFor="englishFormal" className="text-[#AA9B13] peer-checked/englishFormal:text-[#6A6357] cursor-pointer">
+                English
               </label>
             </div>
           </div>
