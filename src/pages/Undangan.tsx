@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { format } from "date-fns";
+import { useEffect, useMemo, useState } from "react";
+import { format, formatDistanceToNow } from "date-fns";
 import { Copy, Whatsapp } from "iconsax-react";
 import { Share2, Trash } from "lucide-react";
 import { enUS, id } from "date-fns/locale";
@@ -123,6 +123,7 @@ export const SebarUndangan = () => {
     textInvitation: templates.formal,
   });
   const [guests, setGuests] = useState<Guest[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Listen to Firebase changes
   useEffect(() => {
@@ -131,12 +132,20 @@ export const SebarUndangan = () => {
         id: g.id || "",
         name: g.name,
         invitedBy: g.invitedBy,
+        createdAt: g.createdAt,
       }));
       setGuests(formattedGuests);
     });
 
     return () => unsubscribe();
   }, []);
+
+  // Fungsi untuk memfilter tamu berdasarkan pencarian
+  const filteredGuests = useMemo(() => {
+    if (!searchTerm) return guests;
+
+    return guests.filter((guest) => guest.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  }, [guests, searchTerm]);
 
   // handle input / textarea umum
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -172,13 +181,14 @@ export const SebarUndangan = () => {
       };
 
       await addGuest(guestData);
-      toast.success("Daftar Nama Tamu Berhasil ditambahkan");
     }
 
     setFormData((prev) => ({
       ...prev,
       listNama: "",
     }));
+
+    toast.success("Daftar Nama Tamu Berhasil ditambahkan");
   };
 
   // ---- ACTIONS ----
@@ -203,14 +213,14 @@ export const SebarUndangan = () => {
         text: message,
       });
     } else {
-      alert("Fitur share tidak tersedia di browser ini");
+      toast.error("Fitur share tidak tersedia di browser ini");
     }
   };
 
   const handleCopy = async (guestName: string) => {
     const message = buildMessage(guestName);
     await navigator.clipboard.writeText(message);
-    alert(`Teks undangan untuk ${guestName} berhasil disalin`);
+    toast.success(`Teks undangan untuk ${guestName} berhasil disalin`);
   };
 
   const handleDelete = async (id: string) => {
@@ -221,9 +231,9 @@ export const SebarUndangan = () => {
   };
 
   return (
-    <>
+    <main className="grid grid-cols-1 lg:grid-cols-2">
       {/* Form Tamu */}
-      <section className="w-full max-w-lg mx-auto p-4">
+      <section className="w-full max-md:max-w-lg mx-auto p-4 lg:p-10 min-lg:h-full min-lg:max-h-screen min-lg:relative min-lg:overflow-y-auto mb-10 lg:mb-0">
         <form onSubmit={handleSubmit}>
           {/* Nama Pengundang */}
           <div className="mb-5 text-[#6A6357]" style={{ fontFamily: '"Adamina", serif' }}>
@@ -273,54 +283,63 @@ export const SebarUndangan = () => {
           </div>
 
           {/* Tombol Submit */}
-          <button
-            type="submit"
-            className="flex items-center justify-center gap-x-1 bg-[#fefced] border-2 mb-3 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer hover:bg-[#FFEECE] hover:text-[#24364D] transition-colors duration-300"
-            style={{
-              fontFamily: '"Anaheim", sans-serif',
-              fontOpticalSizing: "auto",
-            }}
-          >
-            Buat Daftar Nama
-          </button>
+          <div className="sticky bottom-0 p-3">
+            <button
+              type="submit"
+              className="flex items-center shadow-lg justify-center gap-x-1 bg-[#fefced] border-2 font-light text-lg uppercase border-[#BF9E50] rounded-full w-full py-1 text-[#6a6357] cursor-pointer hover:bg-[#FFEECE] hover:text-[#24364D] transition-colors duration-300"
+              style={{
+                fontFamily: '"Anaheim", sans-serif',
+                fontOpticalSizing: "auto",
+              }}
+            >
+              Buat Daftar Nama
+            </button>
+          </div>
         </form>
       </section>
 
-      <br />
-      <br />
-
       {/* List tamu */}
-      <div className="h-full max-h-[60vh] overflow-y-auto w-full max-w-lg mx-auto relative">
-        <table className="table w-full">
-          <thead className="sticky w-full top-0">
+      <div className="h-full max-h-[60vh] lg:max-h-screen overflow-y-auto w-full max-w-lg mx-auto relative px-3 lg:pt-10">
+        {/* Input Pencarian */}
+        <div className="mb-4 text-[#6A6357]" style={{ fontFamily: '"Adamina", serif' }}>
+          <label htmlFor="search" className="block font-normal mb-1">
+            Cari Tamu:
+          </label>
+          <input type="text" id="search" placeholder="Masukkan nama tamu..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="border border-[#AA9B13] bg-white w-full p-2 rounded" />
+        </div>
+        <table className="table table-auto w-full">
+          <thead className="sticky w-full top-10 lg:-top-10">
             <tr>
-              <th className="text-start bg-amber-50 p-3 rounded-s-lg border-e w-full">Nama Tamu</th>
-              <th className="text-start bg-amber-50 p-3 rounded-e-lg">Aksi</th>
+              <th className="text-start bg-amber-50 p-3 rounded-s-lg border-e w-full">Nama Tamu ({filteredGuests.length})</th>
+              <th className="text-center bg-amber-50 p-3 rounded-e-lg">Aksi</th>
             </tr>
           </thead>
           <tbody>
-            {guests.length === 0 ? (
+            {filteredGuests.length === 0 ? (
               <tr>
                 <td colSpan={2} className="p-3 text-center text-gray-500">
                   Belum ada tamu
                 </td>
               </tr>
             ) : (
-              guests.map((guest) => (
+              filteredGuests.map((guest) => (
                 <tr key={guest.id}>
-                  <td className="p-3 border-b border-[#fefced]">{guest.name}</td>
-                  <td className="p-3 flex gap-x-1 items-center border-b border-[#fefced]">
+                  <td className="p-3 align-middle">
+                    <p>{guest.name}</p>
+                    <small>{guest.createdAt ? formatDistanceToNow(new Date(guest.createdAt), { addSuffix: false, locale: id }) : ""} yang lalu</small>
+                  </td>
+                  <td className="p-3 flex gap-x-1 items-center align-middle">
                     <button onClick={() => handleWhatsapp(guest.name)} className="bg-emerald-400 rounded-full shadow-lg p-2 hover:bg-emerald-500 cursor-pointer transition-colors duration-300">
-                      <Whatsapp size="24" color="#fff" />
+                      <Whatsapp color="#fff" className="size-5 lg:size-5" />
                     </button>
                     <button onClick={() => handleShare(guest.name)} className="bg-[#fefced] rounded-full shadow-lg p-2 hover:bg-[#FFEECE] cursor-pointer transition-colors duration-300">
-                      <Share2 size="20" color="#6a6357" />
+                      <Share2 color="#6a6357" className="size-5 lg:size-5" />
                     </button>
                     <button onClick={() => handleCopy(guest.name)} className="bg-[#fefced] rounded-full shadow-lg p-2 hover:bg-[#FFEECE] cursor-pointer transition-colors duration-300">
-                      <Copy size="24" color="#6a6357" />
+                      <Copy className="size-5 lg:size-5" color="#6a6357" />
                     </button>
                     <button onClick={() => handleDelete(guest.id)} className="bg-rose-300 rounded-full shadow-lg p-2 hover:bg-rose-400 cursor-pointer transition-colors duration-300">
-                      <Trash size="24" color="#fff" />
+                      <Trash className="size-5 lg:size-5" color="#fff" />
                     </button>
                   </td>
                 </tr>
@@ -329,6 +348,6 @@ export const SebarUndangan = () => {
           </tbody>
         </table>
       </div>
-    </>
+    </main>
   );
 };
