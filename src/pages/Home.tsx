@@ -46,6 +46,8 @@ const loveStories = [
   { title: "Langkah Bersama", subtitle: "Menuju Masa Depan", desc: "Kini kami adalah tuan dan puan dengan sisi ego dan kosong yang bertapak di atas permulaan menuju tujuan. Bersama kami berlayar." },
 ];
 
+console.log("DB URL:", import.meta.env.VITE_FIREBASE_DATABASE_URL);
+
 const Home = () => {
   Aos.init();
   const coverRef = useRef<HTMLDivElement>(null);
