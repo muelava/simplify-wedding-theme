@@ -283,7 +283,7 @@ const Home = () => {
     <>
       <audio
         ref={audioRef}
-        src="/audio/kicir-kicir.mp3" // Ganti dengan path musik Anda
+        src="/audio/terbuang-dalam-waktu.mp3" // Ganti dengan path musik Anda
         loop
         preload="auto"
       />
