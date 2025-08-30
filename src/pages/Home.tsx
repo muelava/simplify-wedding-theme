@@ -529,7 +529,7 @@ const Home = () => {
                 Limbangan, Garut
               </p>
               <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357]" data-aos="fade-up" data-aos-duration="1500">
-                Kp. Loji RT 01 / RW 05, Desa Limbangan Timur, Blok Limbangan, Kec. Limbangan, Kab. Garut ( Belakang Polsek Limbangan )
+                Kp. Loji RT. 01 / RW. 05 Desa Limbangan Timur Kec. limbangan, Bl. Limbangan, Kab. Garut-44186 (Belakang Polsek Limbangan)
               </p>
               <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357] mb-2 mt-3" data-aos="fade-up" data-aos-duration="1500">
                 {format(new Date(weddingDate), "EEEE, dd MMMM yyyy", { locale: id })}
@@ -559,7 +559,7 @@ const Home = () => {
                 Limbangan, Garut
               </p>
               <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357]" data-aos="fade-up" data-aos-duration="1500">
-                Kp. Loji RT 01 / RW 05, Desa Limbangan Timur, Blok Limbangan, Kec. Limbangan, Kab. Garut ( Belakang Polsek Limbangan )
+                Kp. Loji RT. 01 / RW. 05 Desa Limbangan Timur Kec. limbangan, Bl. Limbangan, Kab. Garut-44186 (Belakang Polsek Limbangan)
               </p>
               <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357] mb-2 mt-3" data-aos="fade-up" data-aos-duration="1500">
                 {format(new Date(weddingDate2), "EEEE, dd MMMM yyyy", { locale: id })}
