@@ -11,9 +11,9 @@ const eventInfo = {
   catin1: "Adilfi Wicaksani",
   catin2: "Lukman Muhamad Ismail",
   // ISO date biar gampang diformat
-  date: "2025-09-14T11:00:00+07:00",
-  time: "11:00 WIB - Selesai",
-  place: `Kp. Loji RT. 01 / RW. 05 Desa Limbangan Timur Kec. limbangan, Bl. Limbangan, Kab. Garut-44186 (Belakang Polsek Limbangan)`,
+  date: "2025-09-14T09:00:00+07:00",
+  time: "09:00 WIB - Selesai",
+  place: `Kp. Loji RT. 01 / RW. 05 Desa Limbangan Timur Kec. Bl. Limbangan, Kab. Garut (Belakang Polsek Limbangan)`,
   getInvitationLink: (guestName: string) => {
     const baseUrl = window.location.origin;
     return `${baseUrl}?to=${encodeURIComponent(guestName)}`;
