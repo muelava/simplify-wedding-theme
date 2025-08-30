@@ -59,7 +59,7 @@ Tautan undangan: *[link]*
 Atas perhatian dan kehadirannya, kami ucapkan terima kasih.
 
 Hormat kami,
-*${eventInfo.catin1.split(" ")[0]} & ${eventInfo.catin2.split(" ")[0]}*`,
+*[nama_pengundang]*`,
 
   muslim: `بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
 
@@ -85,7 +85,7 @@ Tautan undangan: *[link]*
 Wassalamu’alaikum Warahmatullahi Wabarakatuh
 
 Hormat kami,
-*${eventInfo.catin1.split(" ")[0]} & ${eventInfo.catin2.split(" ")[0]}*`,
+*[nama_pengundang]*`,
 
   englishFormal: `Dear Mr./Mrs./Ms. *[nama]*,
 
@@ -106,7 +106,7 @@ It would be an honor and a great joy for us if you could join this special occas
 Invitation link: *[link]*
 
 Sincerely,
-*${eventInfo.catin1.split(" ")[0]} & ${eventInfo.catin2.split(" ")[0]}*`,
+*[nama_pengundang]*`,
 };
 
 interface Guest extends GuestData {
@@ -240,7 +240,7 @@ export const SebarUndangan = () => {
           {/* Nama Pengundang */}
           <div className="mb-5 text-[#6A6357]" style={{ fontFamily: '"Adamina", serif' }}>
             <label htmlFor="nama" className="block font-normal mb-1">
-              Nama :
+              Nama Pengundang:
             </label>
             <input type="text" id="nama" placeholder="Nama" value={formData.nama} onChange={handleChange} className="border border-[#AA9B13] bg-white w-full p-2 rounded" />
           </div>

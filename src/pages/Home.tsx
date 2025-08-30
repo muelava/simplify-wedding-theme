@@ -25,18 +25,19 @@ const groomSideFamilies: string[] = ["Kel. Bapak Ahmad Fadhil", "Kel. Bapak Rizk
 
 const brideSideFamilies: string[] = ["Kel. Bapak Suryo Nugroho", "Kel. Bapak Andrian Saputra", "Kel. Ibu Lestari Widya", "Kel. Bapak Haris Gunawan", "Kel. Michael Johnson", "Kel. Olivia White", "Kel. James Anderson", "Kel. Besar Isabella Martinez", "Kel. Besar Sophia Taylor / George"];
 
-const weddingDate = "2025-09-14T11:30:00";
+const weddingDate = "2025-09-14T09:00:00";
+const weddingDate2 = "2025-09-14T11:30:00";
 
 const bankAccounts = [
   {
-    bank: "Bank MANDIRI",
+    bank: "Bank BJB",
     name: "Adilfi Wicaksani",
-    number: "1770018344934",
+    number: "0089640784100",
   },
   {
     bank: "Bank BCA",
-    name: "Lukman Muhamad Ismail",
-    number: "3460218178",
+    name: "Adilfi Wicaksani",
+    number: "2310491040",
   },
 ];
 
@@ -480,7 +481,7 @@ const Home = () => {
               Bapak Subiantoro
             </p>
             <p className="text-[#6A6357] text-center text-xl font-normal mb-5 max-w-sm mx-auto" style={{ fontFamily: '"Adamina", serif' }}>
-              Ibu Hj. Dede Sukaesih
+              Ibu Dede Sukaesih
             </p>
             <p className="text-[#6A6357] text-center text-xl font-normal mb-5 max-w-sm mx-auto" style={{ fontFamily: '"Adamina", serif' }}>
               Garut
@@ -498,7 +499,7 @@ const Home = () => {
               Bapak Alm. Suryana
             </p>
             <p className="text-[#6A6357] text-center text-xl font-normal mb-5 max-w-sm mx-auto" style={{ fontFamily: '"Adamina", serif' }}>
-              Ibu Hj. M. Tati Mulyati
+              Ibu M. Tati Mulyati
             </p>
             <p className="text-[#6A6357] text-center text-xl font-normal mb-5 max-w-sm mx-auto" style={{ fontFamily: '"Adamina", serif' }}>
               Purwakarta
@@ -522,13 +523,13 @@ const Home = () => {
           <div className="w-full max-w-xs mx-auto bg-[#F4F1EA] rounded-xl p-3 mb-4 shadow">
             <div className="border border-dashed rounded-xl">
               <p className="text-[#6A6357] text-center text-[34px] md:text-4xl py-3 font-normal max-w-sm mx-auto" style={{ fontFamily: "'Alika Misely', Georgia" }} data-aos="fade-up" data-aos-duration="1500">
-                Akad & Resepsi
+                Akad
               </p>
               <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.165rem] uppercase text-center text-base md:text-[18px] text-[#6A6357]" data-aos="fade-up" data-aos-duration="1500">
                 Limbangan, Garut
               </p>
               <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357]" data-aos="fade-up" data-aos-duration="1500">
-                Kp. Loji, Limbangan Timur Limbangan, Garut (Belakang Pos Giro)
+                Kp. Loji RT 01 / RW 05, Desa Limbangan Timur, Blok Limbangan, Kec. Limbangan, Kab. Garut ( Belakang Polsek Limbangan )
               </p>
               <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357] mb-2 mt-3" data-aos="fade-up" data-aos-duration="1500">
                 {format(new Date(weddingDate), "EEEE, dd MMMM yyyy", { locale: id })}
@@ -549,25 +550,25 @@ const Home = () => {
           </div>
 
           {/* Reception */}
-          {/* <div className="w-full max-w-xs mx-auto bg-[#F4F1EA] rounded-xl p-3 shadow">
+          <div className="w-full max-w-xs mx-auto bg-[#F4F1EA] rounded-xl p-3 shadow">
             <div className="border border-dashed rounded-xl py-3">
               <p className="text-[#6A6357] text-center text-[34px] md:text-4xl pb-3 font-normal max-w-sm mx-auto" style={{ fontFamily: "'Alika Misely', Georgia" }} data-aos="fade-up" data-aos-duration="1500">
                 Resepsi
               </p>
               <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.165rem] uppercase text-center text-base md:text-[18px] text-[#6A6357]" data-aos="fade-up" data-aos-duration="1500">
-                Gedung Acara 2
+                Limbangan, Garut
               </p>
               <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357]" data-aos="fade-up" data-aos-duration="1500">
-                Jalan Gedung Acara 2
+                Kp. Loji RT 01 / RW 05, Desa Limbangan Timur, Blok Limbangan, Kec. Limbangan, Kab. Garut ( Belakang Polsek Limbangan )
               </p>
               <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357] mb-2 mt-3" data-aos="fade-up" data-aos-duration="1500">
-                Sabtu, 9 April 2022
+                {format(new Date(weddingDate2), "EEEE, dd MMMM yyyy", { locale: id })}
               </p>
               <p style={{ fontFamily: "'Adamina', sans-serif" }} className="tracking-[0.065rem] text-center text-base text-[#6A6357] leading-1 mb-3" data-aos="fade-up" data-aos-duration="1500">
-                19:00 - 22:00 WIB
+                {format(new Date(weddingDate2), "HH:mm", { locale: id })} WIB - s.d Selesai
               </p>
             </div>
-          </div> */}
+          </div>
         </div>
 
         {/* ============ LOVE STORY ============ */}

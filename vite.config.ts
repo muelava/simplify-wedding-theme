@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     allowedHosts: [
       "localhost", // Often included by default, keep if desired
-      "8213a85e32ad.ngrok-free.app", // Add your ngrok host here
+      "39417c7c6ff4.ngrok-free.app", // Add your ngrok host here
     ],
   },
 });
