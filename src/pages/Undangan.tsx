@@ -301,19 +301,22 @@ export const SebarUndangan = () => {
       </section>
 
       {/* List tamu */}
-      <div className="h-full max-h-[60vh] lg:max-h-screen overflow-y-auto w-full max-w-lg mx-auto relative px-3 lg:pt-10">
-        {/* Input Pencarian */}
-        <div className="mb-4 text-[#6A6357]" style={{ fontFamily: '"Adamina", serif' }}>
-          <label htmlFor="search" className="block font-normal mb-1">
-            Cari Tamu:
-          </label>
-          <input type="text" id="search" placeholder="Masukkan nama tamu..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="border border-[#AA9B13] bg-white w-full p-2 rounded" />
-        </div>
+      <div className="h-full max-h-[80vh] lg:max-h-screen overflow-y-auto w-full max-w-lg mx-auto relative px-3 lg:pt-10">
         <table className="table table-auto w-full">
-          <thead className="sticky w-full top-0 lg:-top-10">
+          <thead className="sticky w-full top-0 lg:-top-10 z-30 backdrop-blur-2xl rounded-lg shadow-lg">
             <tr>
-              <th className="text-start bg-amber-50 p-3 text-neutral-600 font-normal rounded-s-lg w-full">Nama Tamu ({filteredGuests.length})</th>
-              <th className="text-center bg-amber-50 p-3 text-neutral-600 font-normal rounded-e-lg">Aksi</th>
+              <th colSpan={2} className="pt-3">
+                <div className="m-2 md:m-4 text-[#6A6357]" style={{ fontFamily: '"Adamina", serif' }}>
+                  <label htmlFor="search" className="block font-normal mb-1">
+                    Cari Tamu:
+                  </label>
+                  <input type="text" id="search" placeholder="Masukkan nama tamu..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="border border-[#AA9B13] w-full p-2 rounded focus:outline-[#BF9E50] focus:outline-1 bg-amber-50/30" />
+                </div>
+              </th>
+            </tr>
+            <tr>
+              <th className="text-start p-3 text-neutral-600 font-normal rounded-s-lg w-full">Daftar Tamu ({filteredGuests.length})</th>
+              <th className="text-center p-3 text-neutral-600 font-normal rounded-e-lg">Aksi</th>
             </tr>
           </thead>
           <tbody>

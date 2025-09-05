@@ -90,6 +90,11 @@ const Home = () => {
   const galleryRef = useRef(null);
   const greetingsRef = useRef(null);
 
+  const [displayedGreetings, setDisplayedGreetings] = useState<GreetingData[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const GREETINGS_PER_PAGE = 10;
+
   const scrollToSectionAlt = (ref: { current: HTMLDivElement | null }) => {
     if (ref.current) {
       ref.current.scrollIntoView({
@@ -279,6 +284,35 @@ const Home = () => {
       toast.error("Gagal mengirim ucapan 😢");
     }
   };
+
+  useEffect(() => {
+    if (greetings.length > 0) {
+      const endIndex = Math.min(GREETINGS_PER_PAGE, greetings.length);
+      setDisplayedGreetings(greetings.slice(0, endIndex));
+      setCurrentPage(1);
+    } else {
+      setDisplayedGreetings([]);
+      setCurrentPage(1);
+    }
+  }, [greetings]);
+
+  // Function untuk load more dengan button
+  const handleLoadMore = () => {
+    if (isLoadingMore) return;
+
+    setIsLoadingMore(true);
+
+    setTimeout(() => {
+      const nextEndIndex = (currentPage + 1) * GREETINGS_PER_PAGE;
+      const newDisplayedGreetings = greetings.slice(0, Math.min(nextEndIndex, greetings.length));
+
+      setDisplayedGreetings(newDisplayedGreetings);
+      setCurrentPage((prev) => prev + 1);
+      setIsLoadingMore(false);
+    }, 500);
+  };
+
+  const hasMoreGreetings = displayedGreetings.length < greetings.length;
 
   return (
     <>
@@ -739,9 +773,9 @@ const Home = () => {
             className="w-[300px] h-[144px] rounded-[30px] mx-auto flex flex-col justify-center items-center relative"
             style={{
               background: `
-                url(/images/cd-bg-2.png) no-repeat center,
-                url(/images/cd-bg-1.png) no-repeat center
-                `,
+        url(/images/cd-bg-2.png) no-repeat center,
+        url(/images/cd-bg-1.png) no-repeat center
+        `,
               backgroundSize: "calc(100% - 17px), 100%",
             }}
           >
@@ -756,14 +790,59 @@ const Home = () => {
               </p>
             </div>
           </div>
+
           <div className="w-full max-w-sm mx-auto bg-[#F4F1EA] rounded-3xl px-5 py-10 shadow-lg my-10">
-            {greetings.map((item, index) => (
-              <div key={index} style={{ fontFamily: '"Adamina", serif' }} className="text-[#24364D] max-w-xs mx-auto border-b border-dashed py-8" data-aos="fade-up" data-aos-delay={(150 + index * 150).toString()} data-aos-duration="800">
+            {/* Display greeting count */}
+            {greetings.length > 0 && (
+              <p className="text-center text-[#C09F4F] text-sm mb-5" style={{ fontFamily: "'Adamina', serif" }}>
+                Menampilkan {displayedGreetings.length} dari {greetings.length} ucapan
+              </p>
+            )}
+
+            {/* Displayed greetings */}
+            {displayedGreetings.map((item, index) => (
+              <div key={`${index}`} style={{ fontFamily: '"Adamina", serif' }} className="text-[#24364D] max-w-xs mx-auto border-b border-dashed py-8" data-aos="fade-up" data-aos-delay={(10 + (index % 5) * 10).toString()} data-aos-duration="800">
                 <p className="text-center mb-5 text-sm leading-normal">{item.message}</p>
                 <p className="text-center text-[#C09F4F]">{item.name}</p>
                 <p className="text-gray-400 text-[10px] text-center">{item.createdAt ? formatDistanceToNow(new Date(item.createdAt), { addSuffix: false, locale: id }) : ""} yang lalu</p>
               </div>
             ))}
+
+            {/* Load More Button */}
+            {hasMoreGreetings && (
+              <div className="text-center py-6">
+                <button
+                  onClick={handleLoadMore}
+                  disabled={isLoadingMore}
+                  className="flex items-center justify-center mx-auto gap-x-2 bg-[#fefced] border-2 border-[#BF9E50] rounded-full px-6 py-2 text-[#6a6357] cursor-pointer hover:bg-[#FFEECE] hover:text-[#24364D] transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{ fontFamily: '"Anaheim", sans-serif', fontOpticalSizing: "auto" }}
+                >
+                  {isLoadingMore ? (
+                    <>
+                      <div className="size-4 border-2 border-[#6a6357] border-t-transparent rounded-full animate-spin"></div>
+                      <span className="text-sm uppercase">Memuat...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Plus size={16} />
+                      <span className="text-sm uppercase">Lihat Lebih Banyak</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
+
+            {/* End of list indicator */}
+            {!hasMoreGreetings && greetings.length > GREETINGS_PER_PAGE && (
+              <div className="text-center py-4">
+                <div className="w-full h-px bg-gradient-to-r from-transparent via-[#C09F4F]/30 to-transparent mb-3"></div>
+                <p className="text-[#C09F4F] text-sm" style={{ fontFamily: "'Adamina', serif" }}>
+                  Semua ucapan telah ditampilkan
+                </p>
+              </div>
+            )}
+
+            {/* Empty state */}
             {greetings.length < 1 && (
               <div>
                 <MailSearch size={50} className="text-[#C09F4F]/40 mx-auto mb-3" />
